@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 #include "UnityCG.cginc"
 
 // Mobile: use RGBM instead of float/half RGB
@@ -15,6 +17,9 @@ half _Threshold;
 half3 _Curve;
 float _SampleScale;
 half _Intensity;
+
+sampler2D _DirtTex;
+half _DirtIntensity;
 
 // Brightness function
 half Brightness(half3 c)
@@ -133,7 +138,7 @@ v2f_img vert(appdata_img v)
     o.pos = UnityObjectToClipPos(v.vertex);
     o.uv = UnityStereoScreenSpaceUVAdjust(v.texcoord, _MainTex_ST);
 #else
-    o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+    o.pos = UnityObjectToClipPos(v.vertex);
     o.uv = v.texcoord;
 #endif
     return o;
@@ -154,7 +159,7 @@ v2f_multitex vert_multitex(appdata_img v)
     o.uvMain = UnityStereoScreenSpaceUVAdjust(v.texcoord, _MainTex_ST);
     o.uvBase = UnityStereoScreenSpaceUVAdjust(v.texcoord, _BaseTex_ST);
 #else
-    o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+    o.pos = UnityObjectToClipPos(v.vertex);
     o.uvMain = v.texcoord;
     o.uvBase = v.texcoord;
 #endif
@@ -230,7 +235,12 @@ half4 frag_upsample_final(v2f_multitex i) : SV_Target
 #if UNITY_COLORSPACE_GAMMA
     base.rgb = GammaToLinearSpace(base.rgb);
 #endif
-    half3 cout = base.rgb + blur * _Intensity;
+    half3 bloom = blur * _Intensity;
+    half3 cout = base.rgb + bloom;
+#if DIRT_TEXTURE
+    half3 dirt = tex2D(_DirtTex, i.uvMain).rgb * _DirtIntensity;
+    cout += bloom * dirt;
+#endif
 #if UNITY_COLORSPACE_GAMMA
     cout = LinearToGammaSpace(cout);
 #endif

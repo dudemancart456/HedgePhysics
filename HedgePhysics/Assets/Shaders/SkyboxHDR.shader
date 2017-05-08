@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Volund/Skybox Following Sun" {
 Properties {
 	_Tex ("Cubemap", Cube) = "white" {}
@@ -56,7 +58,7 @@ SubShader {
 			sincos(rotation, s, c);
 			float2x2 m = float2x2(c, -s, s, c);
 			o.vertex = float4(mul(m, v.vertex.xz), v.vertex.yw).xzyw;
-			o.vertex = mul(UNITY_MATRIX_MVP, o.vertex);
+			o.vertex = UnityObjectToClipPos(o.vertex);
 			o.texcoord = v.texcoord;
 			o.color = lerp (_TintDay.rgb, _TintNight.rgb, saturate(pow(1-sunDir.y, _SkyExponent)));
 			if (length (_LightColor0.rgb) <= 1e-3) // HACK: detecting if we render into defualt-reflecion probe here

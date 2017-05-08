@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 98339e46b3b39428db14bfb3b1a21012
+timeCreated: 1423208896
+licenseType: Pro
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - m_LightShader: {fileID: 4800000, guid: 71c67a9f91e9b4a20b9dd927792e276a, type: 3}
+  - m_CubeMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  - m_SphereMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

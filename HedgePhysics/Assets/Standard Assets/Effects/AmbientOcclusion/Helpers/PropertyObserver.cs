@@ -5,7 +5,7 @@ namespace UnityStandardAssets.CinematicEffects
     public partial class AmbientOcclusion : MonoBehaviour
     {
         // Observer class that detects changes on properties
-        struct PropertyObserver
+        class PropertyObserver
         {
             // AO properties
             bool _downsampling;

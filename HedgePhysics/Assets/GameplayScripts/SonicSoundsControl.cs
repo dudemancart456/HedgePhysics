@@ -22,6 +22,11 @@ public class SonicSoundsControl : MonoBehaviour {
 
     public float pitchBendingRate = 1;
 
+    public void Test(string i)
+    {
+
+    }
+
     void Start()
     {
         Source = GetComponent<AudioSource>();

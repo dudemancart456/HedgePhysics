@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Upgrade NOTE: replaced 'unity_World2Shadow' with 'unity_WorldToShadow'
 
 Shader "Hidden/AtmosphericScattering_Occlusion" {
@@ -37,7 +39,7 @@ CGINCLUDE
 	
 	v2f vert(appdata_img v) {
 		v2f o;
-		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+		o.pos = UnityObjectToClipPos(v.vertex);
 		o.uv = v.texcoord.xy;
 		o.ray = u_ViewportCorner + o.uv.x * u_ViewportRight + o.uv.y * u_ViewportUp;
 		return o;

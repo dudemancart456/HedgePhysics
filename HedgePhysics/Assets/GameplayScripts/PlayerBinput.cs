@@ -149,7 +149,7 @@ public class PlayerBinput : MonoBehaviour {
 
         if (LockCam)
         {
-            Cam.Cam.FollowDirection(3, 14, -10);
+            Cam.Cam.FollowDirection(3, 14, -10,0);
         }
 
         if (Actions.Action != 0)

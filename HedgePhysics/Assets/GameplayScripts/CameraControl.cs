@@ -17,25 +17,19 @@ public class CameraControl : MonoBehaviour {
         {
             if(col.GetComponent<CameraTriggerData>() != null)
             {
-                if(col.GetComponent<CameraTriggerData>().Type == TriggerType.LookTowards)
+                if (col.GetComponent<CameraTriggerData>().Type == TriggerType.LockToDirection)
                 {
-                    transform.rotation = Quaternion.identity;
-                    Vector3 dir = col.transform.GetChild(0).up;
-
-                    dir.y = col.GetComponent<CameraTriggerData>().CameraAltitude;
-
-                    Cam.CameraMaxDistance = col.GetComponent<CameraTriggerData>().ChangeDistance;
-                    Cam.ChangeDirection(0.4f, 0.4f, dir);
-                }
-                else if (col.GetComponent<CameraTriggerData>().Type == TriggerType.LockToDirection)
-                {
-                    transform.rotation = Quaternion.identity;
-                    Vector3 dir = col.transform.GetChild(0).up;
-
-                    dir.y = col.GetComponent<CameraTriggerData>().CameraAltitude;
-                    Cam.CameraMaxDistance = col.GetComponent<CameraTriggerData>().ChangeDistance;
-                    Cam.ChangeDirection(0.4f, 0.4f, dir);
+                    Vector3 dir = col.transform.forward;
+                    Cam.SetCamera(dir, 2f, col.GetComponent<CameraTriggerData>().CameraAltitude);
                     Cam.Locked = true;
+                    if (col.GetComponent<CameraTriggerData>().changeDistance)
+                    {
+                        Cam.CameraMaxDistance = col.GetComponent<CameraTriggerData>().ChangeDistance;
+                    }
+                    else
+                    {
+                        Cam.CameraMaxDistance = InitialDistance;
+                    }
                 }
                 else if (col.GetComponent<CameraTriggerData>().Type == TriggerType.SetFree)
                 {
@@ -44,13 +38,16 @@ public class CameraControl : MonoBehaviour {
                 }
                 else if (col.GetComponent<CameraTriggerData>().Type == TriggerType.SetFreeAndLookTowards)
                 {
-                    transform.rotation = Quaternion.identity;
-                    Vector3 dir = col.transform.GetChild(0).up;
-
-
-                    dir.y = col.GetComponent<CameraTriggerData>().CameraAltitude;
-                    Cam.ChangeDirection(0.4f, 0.4f, dir);
-                    Cam.CameraMaxDistance = InitialDistance;
+                    Vector3 dir = col.transform.forward;
+                    Cam.SetCamera(dir, 2.5f, col.GetComponent<CameraTriggerData>().CameraAltitude);
+                    if (!col.GetComponent<CameraTriggerData>().changeDistance)
+                    {
+                        Cam.CameraMaxDistance = InitialDistance;
+                    }
+                    else
+                    {
+                        Cam.CameraMaxDistance = col.GetComponent<CameraTriggerData>().ChangeDistance;
+                    }
                     Cam.Locked = false;
                 }
             }

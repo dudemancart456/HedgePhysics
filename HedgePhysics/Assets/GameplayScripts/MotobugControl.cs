@@ -30,15 +30,19 @@ public class MotobugControl : MonoBehaviour {
     public float NoticeReactionTime;
     public float skinRotationSpeed;
 
-    void Start () {
+    void Awake () {
 
         Player = GameObject.FindGameObjectWithTag("Player").transform;
         Physics = GetComponent<EnemyBhysics>();
         InitialPosition = transform.position;
-	
-	}
+        //Physics.rigidbody.velocity = Vector3.zero;
+        Target = InitialPosition;
+
+    }
 	
 	void FixedUpdate () {
+
+
 
         switch (Action)
         {
@@ -55,8 +59,6 @@ public class MotobugControl : MonoBehaviour {
                 break;
 
         }
-
-        //Debug.Log(distanceToPlayer);
 	}
 
     void Action_00_Wander()

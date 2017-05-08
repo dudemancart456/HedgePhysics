@@ -22,7 +22,7 @@ public class EnemySpawnerEternal : MonoBehaviour {
         counter = RespawnTime;
     }
 
-    void Update()
+    void LateUpdate()
     {
         counter += Time.deltaTime;
         if (Vector3.Distance(Player.position, transform.position) < Distance)

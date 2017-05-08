@@ -28,6 +28,8 @@ public class Action03_SpinDash : MonoBehaviour {
     Vector3 RawPrevInput;
     Quaternion CharRot;
 
+    public float ReleaseShakeAmmount;
+
     void Start()
     {
         Player = GetComponent<PlayerBhysics>();
@@ -46,7 +48,7 @@ public class Action03_SpinDash : MonoBehaviour {
         charge += SpinDashChargingSpeed;
 
         //Lock camera on behind
-        Cam.Cam.FollowDirection(3, 14f, -10);
+        Cam.Cam.FollowDirection(3, 14f, -10,0);
 
         if (Player.RawInput.sqrMagnitude > 0.9f)
         {
@@ -77,6 +79,7 @@ public class Action03_SpinDash : MonoBehaviour {
 
     void Release()
     {
+        HedgeCamera.Shakeforce = (ReleaseShakeAmmount * charge)/100;
         if (charge < MinimunCharge)
         {
             sounds.Source2.Stop();

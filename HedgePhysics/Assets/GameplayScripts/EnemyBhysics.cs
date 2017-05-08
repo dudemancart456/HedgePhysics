@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnemyBhysics : MonoBehaviour {
 
-    Rigidbody rigidbody;
+    public Rigidbody rigidbody { get; set; }
     public float MoveAccell;
     public float MoveDecell;
     public float TangentialDrag;

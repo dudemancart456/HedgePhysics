@@ -114,5 +114,32 @@ Shader "Hidden/Image Effects/Cinematic/Bloom"
             #pragma target 3.0
             ENDCG
         }
+        // 9: Combiner + dirt texture
+        Pass
+        {
+            ZTest Always Cull Off ZWrite Off
+            CGPROGRAM
+            #define DIRT_TEXTURE 1
+            #pragma multi_compile _ UNITY_COLORSPACE_GAMMA
+            #include "Bloom.cginc"
+            #pragma vertex vert_multitex
+            #pragma fragment frag_upsample_final
+            #pragma target 3.0
+            ENDCG
+        }
+        // 10: High quality combiner + dirt texture
+        Pass
+        {
+            ZTest Always Cull Off ZWrite Off
+            CGPROGRAM
+            #define DIRT_TEXTURE 1
+            #define HIGH_QUALITY 1
+            #pragma multi_compile _ UNITY_COLORSPACE_GAMMA
+            #include "Bloom.cginc"
+            #pragma vertex vert_multitex
+            #pragma fragment frag_upsample_final
+            #pragma target 3.0
+            ENDCG
+        }
     }
 }

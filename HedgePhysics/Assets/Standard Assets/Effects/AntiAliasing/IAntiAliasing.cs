@@ -4,6 +4,7 @@ namespace UnityStandardAssets.CinematicEffects
 {
     public interface IAntiAliasing
     {
+        void Awake();
         void OnEnable(AntiAliasing owner);
         void OnDisable();
         void OnPreCull(Camera camera);

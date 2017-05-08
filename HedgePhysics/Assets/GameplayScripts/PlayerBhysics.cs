@@ -30,6 +30,11 @@ public class PlayerBhysics : MonoBehaviour {
     public float SlopePowerShiftSpeed;
     public float LandingConversionFactor = 2;
 
+    [Header("AirMovementExtras")]
+    public float AirControlAmmount = 2;
+    public float AirSkiddingForce = 10;
+    public bool StopAirMovementIfNoInput = false;
+
 
     public bool Grounded { get; set; }
     public Vector3 GroundNormal { get; set; }
@@ -87,6 +92,7 @@ public class PlayerBhysics : MonoBehaviour {
     public Vector3 PreviousRawInput { get; set; }
     public Vector3 PreviousRawInputForAnim { get; set; }
     public float SpeedMagnitude { get; set; }
+    public float XZmag { get; set; }
 
     private void Start()
     {
@@ -143,7 +149,7 @@ public class PlayerBhysics : MonoBehaviour {
         curvePosSlope = Mathf.Lerp(curvePosSlope, SlopePowerOverSpeed.Evaluate((rigidbody.velocity.sqrMagnitude / MaxSpeed) / MaxSpeed), Time.fixedDeltaTime * SlopePowerShiftSpeed);
 
         // Apply Max Speed Limit
-        float XZmag = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z).sqrMagnitude;
+        XZmag = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z).magnitude;
 
         // Do it for X and Z
         if (XZmag > MaxSpeed)
@@ -437,7 +443,7 @@ public class PlayerBhysics : MonoBehaviour {
     public void StickToGround(float StickingPower)
     {
         CollisionPoint.LookAt(transform.position);
-        if (Physics.Raycast(transform.position, -Colliders.up, out hit, GroundStickingDistance) && !Input.GetButton("A"))
+        if (Physics.Raycast(CollisionPoint.position, -Colliders.up, out hit, GroundStickingDistance) && !Input.GetButton("A"))
         {
             Vector3 force = hit.normal * StickingPower;
             AddVelocity(force);
@@ -453,7 +459,7 @@ public class PlayerBhysics : MonoBehaviour {
     void AirMovement()
     {
         //AddSpeed
-        HandleGroundControl(1 , MoveInput);
+        HandleGroundControl(AirControlAmmount , MoveInput);
 
         //Get out of roll
         isRolling = false;
@@ -461,11 +467,8 @@ public class PlayerBhysics : MonoBehaviour {
         //Apply Gravity
         rigidbody.velocity = rigidbody.velocity + Gravity;
 
-        //Rotation
-        //transform.rotation = Quaternion.identity;
-
         //Reduce speed
-        if (MoveInput == Vector3.zero)
+        if (MoveInput == Vector3.zero && StopAirMovementIfNoInput)
         {
             Vector3 ReducedSpeed = rigidbody.velocity;
             ReducedSpeed.x = ReducedSpeed.x / AirDecell;
@@ -479,9 +482,15 @@ public class PlayerBhysics : MonoBehaviour {
         //Air Skidding  
         if (b_normalSpeed < 0 && !Grounded)
         {
-            Debug.Log("skedInair");
-            AddVelocity((MoveInput * 10) * MoveAccell);
+            HandleGroundControl(1,(MoveInput * AirSkiddingForce) * MoveAccell);
         }
+
+        //Max Falling Speed
+        if (rigidbody.velocity.y < MaxFallingSpeed)
+        {
+            rigidbody.velocity = new Vector3(rigidbody.velocity.x, MaxFallingSpeed,rigidbody.velocity.z);
+        }
+
     }
 
     private void OnDrawGizmosSelected()
@@ -502,23 +511,16 @@ public class PlayerBhysics : MonoBehaviour {
             Vector3 normalSum = Vector3.zero;
             for (int i = 0; i < col.contacts.Length; i++)
             {
-                //Check if the 
-                if (col.contacts[i].thisCollider == CollisionSphere)
-                {
-                    pointSum = pointSum + col.contacts[i].point;
-                    normalSum = normalSum + col.contacts[i].normal;
-                }
-                if (col.contacts[i].thisCollider == CollisionCapsule)
-                {
-                    pointSum = Prevnormal;
-                    normalSum = Prevnormal;
-                }
+                pointSum = pointSum + col.contacts[i].point;
+                normalSum = normalSum + col.contacts[i].normal;
             }
+
             pointSum = pointSum / col.contacts.Length;
             CollisionPointsNormal = normalSum / col.contacts.Length;
+
             if(rigidbody.velocity.normalized != Vector3.zero)
             {
-                CollisionPoint.localPosition = CollisionPointsNormal;
+                CollisionPoint.position = pointSum;
             }
 
         }

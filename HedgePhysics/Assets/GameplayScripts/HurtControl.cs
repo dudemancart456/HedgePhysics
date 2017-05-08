@@ -5,6 +5,7 @@ using System.Collections;
 public class HurtControl : MonoBehaviour {
 
     ActionManager Actions;
+    PlayerBinput Inp;
     LevelProgressControl Level;
     PlayerBhysics Player;
     Objects_Interaction Objects;
@@ -31,6 +32,7 @@ public class HurtControl : MonoBehaviour {
     int deadCounter = 0;
 
     public Image FadeOutImage;
+    Vector3 InitialDir;
 
 	void Awake () {
 
@@ -41,7 +43,9 @@ public class HurtControl : MonoBehaviour {
         Objects = GetComponent<Objects_Interaction>();
         releaseDirection = new GameObject();
         Cam = GetComponent<CameraControl>();
-
+        InitialDir = transform.forward;
+        Inp = GetComponent<PlayerBinput>();
+        this.enabled = true;
     }
 	
 	void FixedUpdate () {
@@ -70,31 +74,45 @@ public class HurtControl : MonoBehaviour {
         {
             Death();
         }
-        else
+        else if(counter > 30)
         {
             Color alpha = Color.black;
             alpha.a = 0;
-            FadeOutImage.color = Color.Lerp(FadeOutImage.color, alpha, Time.fixedTime * 3);
+            FadeOutImage.color = Color.Lerp(FadeOutImage.color, alpha, 0.5f);
         }
 	}
 
     void Death()
     {
+        Inp.enabled = false;
         Actions.ChangeAction(4);
         Player.MoveInput = Vector3.zero;
         deadCounter += 1;
+        Debug.Log("DeathGroup");
 
-        if(deadCounter > 80)
+        if (deadCounter > 60)
         {
             Color alpha = Color.black;
-            FadeOutImage.color = Color.Lerp(FadeOutImage.color, alpha, Time.fixedTime * 1);
+            alpha.a = 1;
+            FadeOutImage.color = Color.Lerp(FadeOutImage.color, alpha, 0.5f);
         }
-        if (deadCounter > 170)
+        if(deadCounter  > 150)
         {
-            Actions.Action04.CharacterAnimator.SetBool("Dead", false);
+            if (Level.CurrentCheckPoint)
+            {
+                Cam.Cam.SetCamera(Level.CurrentCheckPoint.transform.forward, 2,10,10);
+            }
+            else
+            {
+                Cam.Cam.SetCamera(InitialDir, 5);
+            }
+            Inp.enabled = true;
             Level.ResetToCheckPoint();
+            Debug.Log("CallingReset");
             isDead = false;
+            Actions.Action04.CharacterAnimator.SetBool("Dead", false);
             deadCounter = 0;
+            counter = 0;
         }
     }
 
@@ -123,7 +141,9 @@ public class HurtControl : MonoBehaviour {
         {
             Vector3 pos = transform.position;
             pos.y += 1;
-            GameObject movingRing = (GameObject)Instantiate(MovingRing, pos, Quaternion.identity);
+            GameObject movingRing;
+            movingRing = Instantiate(MovingRing, pos, Quaternion.identity);
+            movingRing.transform.parent = null;
             movingRing.GetComponent<Rigidbody>().velocity = Vector3.zero;
             movingRing.GetComponent<Rigidbody>().AddForce((releaseDirection.transform.forward * RingReleaseSpeed), ForceMode.Acceleration);
             releaseDirection.transform.Rotate(0, RingArcSpeed, 0);
@@ -159,7 +179,7 @@ public class HurtControl : MonoBehaviour {
     {
         if (col.tag == "Pit")
         {
-            Cam.Cam.LagCamera(0, 0);
+            Cam.Cam.SetCamera(-99);
         }
     }
     public void OnTriggerEnter(Collider col)

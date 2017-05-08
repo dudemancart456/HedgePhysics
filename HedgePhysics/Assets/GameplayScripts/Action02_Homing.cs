@@ -17,7 +17,7 @@ public class Action02_Homing : MonoBehaviour {
     float Aspeed;
     Vector3 direction;
 
-    public Vector3 Target { get; set; }
+    public Transform Target { get; set; }
     public float skinRotationSpeed;
     public bool HomingAvailable { get; set; }
     public bool IsAirDash { get; set; }
@@ -32,7 +32,7 @@ public class Action02_Homing : MonoBehaviour {
     {
         if (Action.Action02Control.HasTarget)
         {
-            Target = HomingAttackControl.TargetObject.transform.position;
+            Target = HomingAttackControl.TargetObject.transform;
         }
 
         Timer = 0;
@@ -73,7 +73,7 @@ public class Action02_Homing : MonoBehaviour {
             Vector3 TgyXY = HomingAttackControl.TargetObject.transform.position.normalized;
             TgyXY.y = 0;
             float facingAmmount = Vector3.Dot(Player.PreviousRawInput.normalized, TgyXY);
-            Debug.Log(facingAmmount);
+            //Debug.Log(facingAmmount);
             if (facingAmmount < FacingAmmount) { IsAirDash = true; }
         }
 
@@ -116,7 +116,7 @@ public class Action02_Homing : MonoBehaviour {
         }
         else
         {
-            direction = Target - transform.position;
+            direction = Target.position - transform.position;
             Player.rigidbody.velocity = direction.normalized * Speed;
         }
 

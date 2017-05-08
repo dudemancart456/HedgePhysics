@@ -27,6 +27,9 @@ public class Objects_Interaction : MonoBehaviour {
     public bool StopOnHit;
     public bool updateTargets { get; set; }
 
+    public float EnemyDamageShakeAmmount;
+    public float EnemyHitShakeAmmount;
+
     [Header("UI objects")]
 
     public Text RingsCounter;
@@ -73,15 +76,11 @@ public class Objects_Interaction : MonoBehaviour {
             {
                 transform.rotation = Quaternion.identity;
                 //ResetPlayerRotation
-                if (col.GetComponent<SpeedPadData>().ResetRotation)
-                {
-                    transform.rotation = Quaternion.identity;
-                }
 
                 if (col.GetComponent<SpeedPadData>().LockToDirection)
                 {
                     Player.rigidbody.velocity = Vector3.zero;
-                    Player.AddVelocity(col.transform.up * col.GetComponent<SpeedPadData>().Speed);
+                    Player.AddVelocity(col.transform.forward * col.GetComponent<SpeedPadData>().Speed);
                 }
                 else
                 {
@@ -102,12 +101,15 @@ public class Objects_Interaction : MonoBehaviour {
                 {
                     Inp.LockInputForAWhile(col.GetComponent<SpeedPadData>().LockControlTime, true);
                 }
-                Cam.LagCamera(0.5f, 0.5f);
-                col.GetComponent<AudioSource>().Play();
+                if (col.GetComponent<SpeedPadData>().AffectCamera)
+                {
+                    Vector3 dir = col.transform.forward;
+                    Cam.SetCamera(dir, 2.5f, 20, 5f, 1);
+                    col.GetComponent<AudioSource>().Play();
+                }
 
             }
         }
-
 
         //Rings Collision
         if (col.tag == "Ring")
@@ -129,11 +131,19 @@ public class Objects_Interaction : MonoBehaviour {
             }
         }
 
+        //Hazard
+        if(col.tag == "Hazard")
+        {
+            DamagePlayer();
+            HedgeCamera.Shakeforce = EnemyDamageShakeAmmount;
+        }
+
         //Enemies
         if (col.tag == "Enemy")
         {
+            HedgeCamera.Shakeforce = EnemyHitShakeAmmount;
             //If 1, destroy, if not, take damage.
-            if(Actions.Action == 3)
+            if (Actions.Action == 3)
             {
                 col.transform.parent.GetComponent<EnemyHealth>().DealDamage(1);
                 updateTargets = true;
@@ -174,42 +184,9 @@ public class Objects_Interaction : MonoBehaviour {
                     
                 }
             }
-            else
+            else if(Actions.Action != 3)
             {
-                if (!Actions.Action04Control.IsHurt && Actions.Action != 4)
-                {
-
-                    if (!Monitors_Interactions.HasShield)
-                    {
-                        if (RingAmmount > 0)
-                        {
-                            //LoseRings
-                            Sounds.RingLossSound();
-                            Actions.Action04Control.GetHurt();
-                            Actions.ChangeAction(4);
-                            Actions.Action04.InitialEvents();
-                        }
-                        if (RingAmmount <= 0)
-                        {
-                            //Die
-                            if (!Actions.Action04Control.isDead)
-                            {
-                                Sounds.DieSound();
-                                Actions.Action04Control.isDead = true;
-                                Actions.ChangeAction(4);
-                                Actions.Action04.InitialEvents();
-                            }
-                        }
-                    }
-                    if (Monitors_Interactions.HasShield)
-                    {
-                        //Lose Shield
-                        Actions.Action04.sounds.SpikedSound();
-                        Monitors_Interactions.HasShield = false;
-                        Actions.ChangeAction(4);
-                        Actions.Action04.InitialEvents();
-                    }
-                }
+                DamagePlayer();
             }
         }
 
@@ -252,7 +229,13 @@ public class Objects_Interaction : MonoBehaviour {
 
     public void OnTriggerStay(Collider col)
     {
-        if(col.gameObject.tag == "MovingPlatform")
+        //Hazard
+        if (col.tag == "Hazard")
+        {
+            DamagePlayer();
+        }
+
+        if (col.gameObject.tag == "MovingPlatform")
         {
             Platform = col.gameObject.GetComponent<MovingPlatformControl>();
         }
@@ -262,4 +245,41 @@ public class Objects_Interaction : MonoBehaviour {
         }
     }
 
+    public void DamagePlayer()
+    {
+        if (!Actions.Action04Control.IsHurt && Actions.Action != 4)
+        {
+
+            if (!Monitors_Interactions.HasShield)
+            {
+                if (RingAmmount > 0)
+                {
+                    //LoseRings
+                    Sounds.RingLossSound();
+                    Actions.Action04Control.GetHurt();
+                    Actions.ChangeAction(4);
+                    Actions.Action04.InitialEvents();
+                }
+                if (RingAmmount <= 0)
+                {
+                    //Die
+                    if (!Actions.Action04Control.isDead)
+                    {
+                        Sounds.DieSound();
+                        Actions.Action04Control.isDead = true;
+                        Actions.ChangeAction(4);
+                        Actions.Action04.InitialEvents();
+                    }
+                }
+            }
+            if (Monitors_Interactions.HasShield)
+            {
+                //Lose Shield
+                Actions.Action04.sounds.SpikedSound();
+                Monitors_Interactions.HasShield = false;
+                Actions.ChangeAction(4);
+                Actions.Action04.InitialEvents();
+            }
+        }
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class LoadingScreenControl : MonoBehaviour {
@@ -12,14 +13,21 @@ public class LoadingScreenControl : MonoBehaviour {
     public int LoadingStart;
     public Camera Cam;
 
-    public int LevelToLoad;
+    int LevelToLoad;
     AsyncOperation levelLoader;
 
     public static bool StageLoaded;
+    public static string StageName1;
+    public static string StageName2;
+
+    public Text StageName1txt;
+    public Text StageName2txt;
 
     void Start()
     {
-
+        LevelToLoad = SceneController.LevelToLoad;
+        StageName1txt.text = StageName1;
+        StageName2txt.text = StageName2;
     }
 
     void FixedUpdate()
@@ -47,7 +55,7 @@ public class LoadingScreenControl : MonoBehaviour {
             }
             if(endCount > 60)
             {
-                SceneManager.UnloadScene(0);
+                SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("LoadingScreen"));
             }
         }
 

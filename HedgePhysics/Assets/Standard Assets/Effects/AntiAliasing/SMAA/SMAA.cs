@@ -289,6 +289,31 @@ namespace UnityStandardAssets.CinematicEffects
             }
         }
 
+        private int m_AreaTex;
+        private int m_SearchTex;
+        private int m_Metrics;
+        private int m_Params1;
+        private int m_Params2;
+        private int m_Params3;
+        private int m_ReprojectionMatrix;
+        private int m_SubsampleIndices;
+        private int m_BlendTex;
+        private int m_AccumulationTex;
+
+        public void Awake()
+        {
+            m_AreaTex = Shader.PropertyToID("_AreaTex");
+            m_SearchTex = Shader.PropertyToID("_SearchTex");
+            m_Metrics = Shader.PropertyToID("_Metrics");
+            m_Params1 = Shader.PropertyToID("_Params1");
+            m_Params2 = Shader.PropertyToID("_Params2");
+            m_Params3 = Shader.PropertyToID("_Params3");
+            m_ReprojectionMatrix = Shader.PropertyToID("_ReprojectionMatrix");
+            m_SubsampleIndices = Shader.PropertyToID("_SubsampleIndices");
+            m_BlendTex = Shader.PropertyToID("_BlendTex");
+            m_AccumulationTex = Shader.PropertyToID("_AccumulationTex");
+        }
+
         public void OnEnable(AntiAliasing owner)
         {
             if (!ImageEffectHelper.IsSupported(shader, true, false, owner))
@@ -352,17 +377,17 @@ namespace UnityStandardAssets.CinematicEffects
             var viewProjectionMatrix = GL.GetGPUProjectionMatrix(m_ProjectionMatrix, true) * camera.worldToCameraMatrix;
 
             // Uniforms
-            material.SetTexture("_AreaTex", areaTexture);
-            material.SetTexture("_SearchTex", searchTexture);
+            material.SetTexture(m_AreaTex, areaTexture);
+            material.SetTexture(m_SearchTex, searchTexture);
 
-            material.SetVector("_Metrics", new Vector4(1f / width, 1f / height, width, height));
-            material.SetVector("_Params1", new Vector4(preset.threshold, preset.depthThreshold, preset.maxSearchSteps, preset.maxDiagonalSearchSteps));
-            material.SetVector("_Params2", new Vector2(preset.cornerRounding, preset.localContrastAdaptationFactor));
+            material.SetVector(m_Metrics, new Vector4(1f / width, 1f / height, width, height));
+            material.SetVector(m_Params1, new Vector4(preset.threshold, preset.depthThreshold, preset.maxSearchSteps, preset.maxDiagonalSearchSteps));
+            material.SetVector(m_Params2, new Vector2(preset.cornerRounding, preset.localContrastAdaptationFactor));
 
-            material.SetMatrix("_ReprojectionMatrix", m_PreviousViewProjectionMatrix * Matrix4x4.Inverse(viewProjectionMatrix));
+            material.SetMatrix(m_ReprojectionMatrix, m_PreviousViewProjectionMatrix * Matrix4x4.Inverse(viewProjectionMatrix));
 
             float subsampleIndex = (m_FlipFlop < 0.0f) ? 2.0f : 1.0f;
-            material.SetVector("_SubsampleIndices", new Vector4(subsampleIndex, subsampleIndex, subsampleIndex, 0.0f));
+            material.SetVector(m_SubsampleIndices, new Vector4(subsampleIndex, subsampleIndex, subsampleIndex, 0.0f));
 
             // Handle predication & depth-based edge detection
             Shader.DisableKeyword("USE_PREDICATION");
@@ -375,7 +400,7 @@ namespace UnityStandardAssets.CinematicEffects
             {
                 camera.depthTextureMode |= DepthTextureMode.Depth;
                 Shader.EnableKeyword("USE_PREDICATION");
-                material.SetVector("_Params3", new Vector3(predication.threshold, predication.scale, predication.strength));
+                material.SetVector(m_Params3, new Vector3(predication.threshold, predication.scale, predication.strength));
             }
 
             // Diag search & corner detection
@@ -389,7 +414,6 @@ namespace UnityStandardAssets.CinematicEffects
                 Shader.EnableKeyword("USE_CORNER_DETECTION");
 
             // UV-based reprojection (up to Unity 5.x)
-            // TODO: use motion vectors when available!
             Shader.DisableKeyword("USE_UV_BASED_REPROJECTION");
 
             if (temporal.UseTemporal())
@@ -432,7 +456,7 @@ namespace UnityStandardAssets.CinematicEffects
                 else
                 {
                     // Neighborhood Blending
-                    material.SetTexture("_BlendTex", rt2);
+                    material.SetTexture(m_BlendTex, rt2);
 
                     if (temporal.UseTemporal())
                     {
@@ -445,7 +469,7 @@ namespace UnityStandardAssets.CinematicEffects
                         }
                         else if (!isFirstFrame)
                         {
-                            material.SetTexture("_AccumulationTex", m_Accumulation);
+                            material.SetTexture(m_AccumulationTex, m_Accumulation);
                             Graphics.Blit(rt1, destination, material, passResolve);
                         }
                         else
@@ -475,7 +499,6 @@ namespace UnityStandardAssets.CinematicEffects
         private RenderTexture TempRT(int width, int height, RenderTextureFormat format)
         {
             // Skip the depth & stencil buffer creation when DebugPass is set to avoid flickering
-            // TODO: Stencil buffer not working for some reason
             // int depthStencilBits = DebugPass == DebugPass.Off ? 24 : 0;
             int depthStencilBits = 0;
             return RenderTexture.GetTemporary(width, height, depthStencilBits, format, RenderTextureReadWrite.Linear);

@@ -20,6 +20,8 @@ public class HomingAttackControl : MonoBehaviour {
     int HomingCount;
     public bool HomingAvailable { get; set; }
 
+    bool firstime = false;
+
     void Awake()
     {
         Actions = GetComponent<ActionManager>();
@@ -35,8 +37,19 @@ public class HomingAttackControl : MonoBehaviour {
         UpdateHomingTargets();
     }
 
+    void LateUpdate()
+    {
+        if (!firstime)
+        {
+            firstime = true;
+            UpdateHomingTargets();
+        }
+    }
+
     void FixedUpdate()
     {
+
+        UpdateHomingTargets();
         //Prevent Homing attack spamming
 
         HomingCount += 1;
@@ -69,7 +82,7 @@ public class HomingAttackControl : MonoBehaviour {
     }
 
     //This function will look for every possible homing attack target in the whole level. 
-    //And you can call it from other scritps
+    //And you can call it from other scritps via [ HomingAttackControl.UpdateHomingTargets() ]
     public static void UpdateHomingTargets()
     {
         var tgt = GameObject.FindGameObjectsWithTag("HomingTarget");

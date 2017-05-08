@@ -211,6 +211,15 @@ namespace UnityStandardAssets.CinematicEffects
 
         public bool validSourceFormat { get; private set; }
 
+        private int m_QualitySettings;
+        private int m_ConsoleSettings;
+
+        public void Awake()
+        {
+            m_QualitySettings = Shader.PropertyToID("_QualitySettings");
+            m_ConsoleSettings = Shader.PropertyToID("_ConsoleSettings");
+        }
+
         public void OnEnable(AntiAliasing owner)
         {
             if (!ImageEffectHelper.IsSupported(shader, true, false, owner))
@@ -242,10 +251,10 @@ namespace UnityStandardAssets.CinematicEffects
                 validSourceFormat = false;
 #endif
 
-            material.SetVector("_QualitySettings", new Vector3(preset.qualitySettings.subpixelAliasingRemovalAmount,
+            material.SetVector(m_QualitySettings, new Vector3(preset.qualitySettings.subpixelAliasingRemovalAmount,
                     preset.qualitySettings.edgeDetectionThreshold, preset.qualitySettings.minimumRequiredLuminance));
 
-            material.SetVector("_ConsoleSettings", new Vector4(preset.consoleSettings.subpixelSpreadAmount,
+            material.SetVector(m_ConsoleSettings, new Vector4(preset.consoleSettings.subpixelSpreadAmount,
                     preset.consoleSettings.edgeSharpnessAmount, preset.consoleSettings.edgeDetectionThreshold,
                     preset.consoleSettings.minimumRequiredLuminance));
 

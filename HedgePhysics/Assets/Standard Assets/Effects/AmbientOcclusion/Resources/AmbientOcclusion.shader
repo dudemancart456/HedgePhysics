@@ -12,9 +12,9 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
         {
             ZTest Always Cull Off ZWrite Off
             CGPROGRAM
-            #define SOURCE_DEPTH 1
+            #define SOURCE_DEPTH
             #include "AmbientOcclusion.cginc"
-            #pragma vertex vert_img
+            #pragma vertex vert
             #pragma fragment frag_ao
             #pragma target 3.0
             ENDCG
@@ -24,9 +24,9 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
         {
             ZTest Always Cull Off ZWrite Off
             CGPROGRAM
-            #define SOURCE_DEPTHNORMALS 1
+            #define SOURCE_DEPTHNORMALS
             #include "AmbientOcclusion.cginc"
-            #pragma vertex vert_img
+            #pragma vertex vert
             #pragma fragment frag_ao
             #pragma target 3.0
             ENDCG
@@ -36,92 +36,85 @@ Shader "Hidden/Image Effects/Cinematic/AmbientOcclusion"
         {
             ZTest Always Cull Off ZWrite Off
             CGPROGRAM
-            #define SOURCE_GBUFFER 1
+            #define SOURCE_GBUFFER
             #include "AmbientOcclusion.cginc"
-            #pragma vertex vert_img
+            #pragma vertex vert
             #pragma fragment frag_ao
             #pragma target 3.0
             ENDCG
         }
-        // 3: Noise reduction (first pass) with CameraDepthNormalsTexture
+        // 3: Separable blur (horizontal pass) with CameraDepthNormalsTexture
         Pass
         {
             ZTest Always Cull Off ZWrite Off
             CGPROGRAM
-            #define SOURCE_DEPTHNORMALS 1
-            #include "AmbientOcclusion.cginc"
-            #pragma vertex vert_img
-            #pragma fragment frag_blur1
+            #define SOURCE_DEPTHNORMALS
+            #define BLUR_HORIZONTAL
+            #define BLUR_SAMPLE_CENTER_NORMAL
+            #include "SeparableBlur.cginc"
+            #pragma vertex vert
+            #pragma fragment frag_blur
             #pragma target 3.0
             ENDCG
         }
-        // 4: Noise reduction (first pass) with G Buffer
+        // 4: Separable blur (horizontal pass) with G-Buffer
         Pass
         {
             ZTest Always Cull Off ZWrite Off
             CGPROGRAM
-            #define SOURCE_GBUFFER 1
-            #include "AmbientOcclusion.cginc"
-            #pragma vertex vert_img
-            #pragma fragment frag_blur1
+            #define SOURCE_GBUFFER
+            #define BLUR_HORIZONTAL
+            #define BLUR_SAMPLE_CENTER_NORMAL
+            #include "SeparableBlur.cginc"
+            #pragma vertex vert
+            #pragma fragment frag_blur
             #pragma target 3.0
             ENDCG
         }
-        // 5: Noise reduction (second pass) with CameraDepthNormalsTexture
+        // 5: Separable blur (vertical pass)
         Pass
         {
             ZTest Always Cull Off ZWrite Off
             CGPROGRAM
-            #define SOURCE_DEPTHNORMALS 1
-            #include "AmbientOcclusion.cginc"
-            #pragma vertex vert_img
-            #pragma fragment frag_blur2
+            #define BLUR_VERTICAL
+            #include "SeparableBlur.cginc"
+            #pragma vertex vert
+            #pragma fragment frag_blur
             #pragma target 3.0
             ENDCG
         }
-        // 6: Noise reduction (second pass) with G Buffer
+        // 6: Final composition
         Pass
         {
             ZTest Always Cull Off ZWrite Off
             CGPROGRAM
-            #define SOURCE_GBUFFER 1
-            #include "AmbientOcclusion.cginc"
-            #pragma vertex vert_img
-            #pragma fragment frag_blur2
+            #include "Composition.cginc"
+            #pragma vertex vert
+            #pragma fragment frag_composition
             #pragma target 3.0
             ENDCG
         }
-        // 7: Occlusion combiner
-        Pass
-        {
-            ZTest Always Cull Off ZWrite Off
-            CGPROGRAM
-            #include "AmbientOcclusion.cginc"
-            #pragma vertex vert_multitex
-            #pragma fragment frag_combine
-            #pragma target 3.0
-            ENDCG
-        }
-        // 8: Occlusion combiner for the ambient-only mode
+        // 7: Final composition (ambient only mode)
         Pass
         {
             Blend Zero OneMinusSrcColor, Zero OneMinusSrcAlpha
             ZTest Always Cull Off ZWrite Off
             CGPROGRAM
-            #include "AmbientOcclusion.cginc"
-            #pragma vertex vert_gbuffer
-            #pragma fragment frag_gbuffer_combine
+            #include "Composition.cginc"
+            #pragma vertex vert_composition_gbuffer
+            #pragma fragment frag_composition_gbuffer
             #pragma target 3.0
             ENDCG
         }
-        // 9: Debug blit
+        // 8: Debug visualization
         Pass
         {
             ZTest Always Cull Off ZWrite Off
             CGPROGRAM
-            #include "AmbientOcclusion.cginc"
-            #pragma vertex vert_multitex
-            #pragma fragment frag_blit_ao
+            #define DEBUG_COMPOSITION
+            #include "Composition.cginc"
+            #pragma vertex vert
+            #pragma fragment frag_composition
             #pragma target 3.0
             ENDCG
         }

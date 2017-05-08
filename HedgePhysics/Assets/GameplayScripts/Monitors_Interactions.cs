@@ -15,14 +15,15 @@ public class Monitors_Interactions : MonoBehaviour {
     public Material NormalShieldMaterial;
     public Vector3 ShieldOffset;
     public static bool HasShield = false;
+    bool updateTgts;
+
+    bool firstTime = false;
 
     void Start () {
 
         Objects = GetComponent<Objects_Interaction>();
         Player = GetComponent<PlayerBhysics>();
         Actions = GetComponent<ActionManager>();
-        ShieldObject = Instantiate(ShieldObject);
-        ShieldObject.SetActive(false);
 
     }
     void FixedUpdate()
@@ -32,6 +33,12 @@ public class Monitors_Interactions : MonoBehaviour {
 
     void Update()
     {
+        if (!firstTime)
+        {
+            ShieldObject.SetActive(false);
+            firstTime = true;
+        }
+
         if (HasShield)
         {
             ShieldObject.SetActive(true);
@@ -40,7 +47,16 @@ public class Monitors_Interactions : MonoBehaviour {
         }
         else
         {
-            ShieldObject.SetActive(false);
+            if (ShieldObject)
+            {
+                ShieldObject.SetActive(false);
+            }
+        }
+
+        if (updateTgts)
+        {
+            HomingAttackControl.UpdateHomingTargets();
+            updateTgts = false;
         }
 
         NormalShieldMaterial.SetTextureOffset("_MainTex", new Vector2(0, -Time.time) * 3);
@@ -89,6 +105,7 @@ public class Monitors_Interactions : MonoBehaviour {
                         GameObject clone = (GameObject)Instantiate(RingGiver, transform.position, transform.rotation);
                         clone.GetComponent<RingGiverControl>().Rings = col.GetComponent<MonitorData>().RingAmmount;
                         col.GetComponent<MonitorData>().DestroyMonitor();
+                        updateTgts = true;
                     }
                 }
                 else if (col.GetComponent<MonitorData>().Type == MonitorType.Shield)
@@ -97,6 +114,7 @@ public class Monitors_Interactions : MonoBehaviour {
                     {
                         GameObject clone = (GameObject)Instantiate(ShieldGiver, transform.position, transform.rotation);
                         col.GetComponent<MonitorData>().DestroyMonitor();
+                        updateTgts = true;
                     }
                 }
             }

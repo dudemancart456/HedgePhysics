@@ -12,6 +12,7 @@ public class SpeedPadData : MonoBehaviour
     public bool Snap;
     public bool isDashRing;
     public bool ResetRotation = true;
+    public bool AffectCamera = true;
 
 }
 

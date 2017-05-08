@@ -86,27 +86,21 @@ public class Action00_Regular : MonoBehaviour {
         //Set Character Animations and position
         CharacterAnimator.transform.parent = null;
         
+        //Set Skin Rotation
         if (Player.Grounded)
         {
-            if (Player.rigidbody.velocity.sqrMagnitude < skinRotationSpeed)
+            Vector3 newForward = Player.rigidbody.velocity - transform.up * Vector3.Dot(Player.rigidbody.velocity, transform.up);
+
+            if (newForward.magnitude < 0.1f)
             {
-                if (Player.rigidbody.velocity.sqrMagnitude > 0.03f)
-                {
-                    if (Player.MoveInput != Vector3.zero)
-                    {
-                        CharRot = Quaternion.LookRotation(Player.MoveInput, Vector3.up);
-                    }
-                    else
-                    {
-                        CharRot = Quaternion.LookRotation(transform.TransformDirection(Player.PreviousInput), Vector3.up);
-                    }
-                }
+                newForward = CharacterAnimator.transform.forward;
             }
-            else
-            {
-                CharRot = Quaternion.LookRotation(Player.rigidbody.velocity, Player.GroundNormal);
-            }
+
+            CharRot = Quaternion.LookRotation(newForward, transform.up);
             CharacterAnimator.transform.rotation = Quaternion.Lerp(CharacterAnimator.transform.rotation, CharRot, Time.deltaTime * skinRotationSpeed);
+
+           // CharRot = Quaternion.LookRotation( Player.rigidbody.velocity, transform.up);
+           // CharacterAnimator.transform.rotation = Quaternion.Lerp(CharacterAnimator.transform.rotation, CharRot, Time.deltaTime * skinRotationSpeed);
         }
         else
         {

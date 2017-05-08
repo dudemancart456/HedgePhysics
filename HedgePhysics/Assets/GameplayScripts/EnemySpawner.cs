@@ -15,7 +15,7 @@ public class EnemySpawner : MonoBehaviour {
         GetComponent<MeshRenderer>().enabled = false;
     }
 
-    void Update()
+    void LateUpdate()
     {
         if(Vector3.Distance(Player.position,transform.position) < Distance)
         {
