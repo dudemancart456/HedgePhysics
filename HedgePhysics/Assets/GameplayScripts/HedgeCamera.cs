@@ -49,6 +49,7 @@ public class HedgeCamera : MonoBehaviour {
     float rotSpeed = 0;
 
     public bool Locked { get; set; }
+    public LayerMask NonCollidableLayers;
 
     void Start()
     {
@@ -99,7 +100,24 @@ public class HedgeCamera : MonoBehaviour {
         var rotation = Quaternion.Euler(y, x, 0);
         rotation = PlayerPosLerped.rotation * rotation;
 
-        var position = rotation * new Vector3(0, 0, CameraMaxDistance + 0.3f) + Target.position;
+        //Collision
+
+        float dist;
+        RaycastHit hit;
+
+        Debug.DrawRay(Target.position, -transform.forward, Color.blue);
+        if (Physics.Raycast(Target.position, -transform.forward, out hit, -CameraMaxDistance, NonCollidableLayers))
+        {
+            dist = (-hit.distance);
+        }
+        else
+        {
+            dist = CameraMaxDistance;
+        }
+
+        Debug.Log(dist);
+
+        var position = rotation * new Vector3(0, 0, dist + 0.3f) + Target.position;
 
         LerpedRot = rotation;
         LerpedPos = position;
@@ -134,7 +152,7 @@ public class HedgeCamera : MonoBehaviour {
         {
 
             float dot = Vector3.Dot(Skin.forward, transform.right);
-            Debug.Log(dot);
+            //Debug.Log(dot);
             x += dot * speed;
 
             if (y < height)

@@ -7,6 +7,7 @@ public class EnemyHealth : MonoBehaviour {
     int HP;
 
     public GameObject Explosion;
+    public EnemySpawnerEternal SpawnReference { get; set; }
 
     void Awake()
     {
@@ -18,6 +19,10 @@ public class EnemyHealth : MonoBehaviour {
         HP -= Damage;
         if(HP <= 0)
         {
+            if(SpawnReference != null)
+            {
+                SpawnReference.ResartSpawner();
+            }
             GameObject.Instantiate(Explosion, transform.position,Quaternion.identity);
             Destroy(gameObject);
         }

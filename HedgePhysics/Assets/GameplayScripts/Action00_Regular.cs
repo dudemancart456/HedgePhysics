@@ -37,15 +37,26 @@ public class Action00_Regular : MonoBehaviour {
 
         //Skidding
 
-        if(Player.b_normalSpeed < -SkiddingStartPoint)
+        if(Player.b_normalSpeed < -SkiddingStartPoint && Player.Grounded)
         {
+            Player.isRolling = false;
             Player.AddVelocity(Player.rigidbody.velocity.normalized * SkiddingIntensity);
-            if (!hasSked && Player.Grounded) { sounds.SkiddingSound(); hasSked = true; }
+            if (!hasSked && Player.Grounded)
+            {
+                sounds.SkiddingSound();
+                hasSked = true;
+            }
+            if(Player.SpeedMagnitude < 4)
+            {
+                Player.b_normalSpeed = 0;
+                hasSked = false;
+            }
         }
         else
         {
             hasSked = false;
         }
+
 
         //Set Homing attack to true
         if (Player.Grounded) { Actions.Action02.HomingAvailable = true; }
@@ -74,11 +85,12 @@ public class Action00_Regular : MonoBehaviour {
 
         //Set Character Animations and position
         CharacterAnimator.transform.parent = null;
+        
         if (Player.Grounded)
         {
             if (Player.rigidbody.velocity.sqrMagnitude < skinRotationSpeed)
             {
-                if (Player.rigidbody.velocity.sqrMagnitude > 0.3f)
+                if (Player.rigidbody.velocity.sqrMagnitude > 0.03f)
                 {
                     if (Player.MoveInput != Vector3.zero)
                     {
@@ -86,7 +98,7 @@ public class Action00_Regular : MonoBehaviour {
                     }
                     else
                     {
-                        CharRot = Quaternion.LookRotation(transform.TransformDirection(Player.PreviousRawInputForAnim), Vector3.up);
+                        CharRot = Quaternion.LookRotation(transform.TransformDirection(Player.PreviousInput), Vector3.up);
                     }
                 }
             }

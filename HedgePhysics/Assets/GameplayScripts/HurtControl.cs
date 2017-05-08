@@ -117,7 +117,8 @@ public class HurtControl : MonoBehaviour {
 
     void RingLoss()
     {
-        Objects.RingAmmount = 0;
+        Objects_Interaction.RingAmmount = 0;
+
         if(RingsToRelease > 0)
         {
             Vector3 pos = transform.position;
@@ -147,9 +148,9 @@ public class HurtControl : MonoBehaviour {
         IsHurt = true;
         counter = 0;
 
-        if(Objects.RingAmmount > 0 && !releasingRings)
+        if(Objects_Interaction.RingAmmount > 0 && !releasingRings)
         {
-            RingsToRelease = Objects.RingAmmount;
+            RingsToRelease = Objects_Interaction.RingAmmount;
             releasingRings = true;
         }
     }

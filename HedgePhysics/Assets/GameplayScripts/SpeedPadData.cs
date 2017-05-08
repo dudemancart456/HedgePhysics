@@ -9,6 +9,9 @@ public class SpeedPadData : MonoBehaviour
     public bool LockControl;
     public float LockControlTime = 0.5f;
     public bool ChangeCameraDirection = true;
+    public bool Snap;
+    public bool isDashRing;
+    public bool ResetRotation = true;
 
 }
 

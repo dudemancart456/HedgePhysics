@@ -51,7 +51,7 @@ public class PlayerBhysics : MonoBehaviour {
     public Transform Colliders;
     public SonicSoundsControl sounds;
 
-    public float CheckForGroundDistance = 0.5f;
+    public float RayToGroundDistance = 0.5f;
 
     public DebugUI Debui;
 
@@ -75,6 +75,9 @@ public class PlayerBhysics : MonoBehaviour {
     public Vector3 b_tangentVelocity { get; set; }
 
     //Etc
+    [Header("Etc Values")]
+
+    public bool UseSphereToGetNormal;
 
     Vector3 KeepNormal;
     float KeepNormalCounter;
@@ -83,6 +86,7 @@ public class PlayerBhysics : MonoBehaviour {
     public Vector3 RawInput { get; set; }
     public Vector3 PreviousRawInput { get; set; }
     public Vector3 PreviousRawInputForAnim { get; set; }
+    public float SpeedMagnitude { get; set; }
 
     private void Start()
     {
@@ -95,6 +99,24 @@ public class PlayerBhysics : MonoBehaviour {
 
         GeneralPhysics();
 
+    }
+
+    void Update()
+    {
+        InputChecks();
+    }
+
+    void InputChecks()
+    {
+        //Rolling
+        if (Input.GetButton("R1") && rigidbody.velocity.sqrMagnitude > RollingStartSpeed)
+        {
+            isRolling = true;
+        }
+        if (Input.GetButtonUp("R1"))
+        {
+            isRolling = false;
+        }
     }
 
     void GeneralPhysics()
@@ -146,19 +168,36 @@ public class PlayerBhysics : MonoBehaviour {
         }
 
         // Check for Ground
-
-        Debug.DrawRay(transform.position, CollisionPointsNormal, Color.blue);
-        if (Physics.Raycast(transform.position, -CollisionPointsNormal, out hit, CheckForGroundDistance))
+        if (UseSphereToGetNormal)
         {
-            GroundNormal = hit.normal;
-            Grounded = true;
-            GroundMovement();
+            Debug.DrawRay(transform.position, CollisionPointsNormal, Color.blue);
+            if (Physics.Raycast(transform.position, -CollisionPointsNormal, out hit, RayToGroundDistance))
+            {
+                GroundNormal = hit.normal;
+                Grounded = true;
+                GroundMovement();
+            }
+            else
+            {
+                Grounded = false;
+                GroundNormal = Vector3.zero;
+                AirMovement();
+            }
         }
         else
         {
-            Grounded = false;
-            GroundNormal = Vector3.zero;
-            AirMovement();
+            if (Physics.Raycast(transform.position, -transform.up, out hit, RayToGroundDistance))
+            {
+                GroundNormal = hit.normal;
+                Grounded = true;
+                GroundMovement();
+            }
+            else
+            {
+                Grounded = false;
+                GroundNormal = Vector3.zero;
+                AirMovement();
+            }
         }
 
         //Rotate Colliders
@@ -181,7 +220,7 @@ public class PlayerBhysics : MonoBehaviour {
                 //transform.rotation = Quaternion.FromToRotation(transform.up, GroundNormal) * transform.rotation;
                 //transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
                 transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
-                Debug.Log("Rots");
+                //Debug.Log("Rots");
             }
         }
 
@@ -294,12 +333,8 @@ public class PlayerBhysics : MonoBehaviour {
 
     void GroundMovement()
     {
-        //Rolling
-        if (Input.GetButton("R1") && rigidbody.velocity.sqrMagnitude > RollingStartSpeed)
-        {
-            isRolling = true;
-        }
-        else
+        //Stop Rolling
+        if(rigidbody.velocity.sqrMagnitude < 20)
         {
             isRolling = false;
         }
@@ -316,6 +351,9 @@ public class PlayerBhysics : MonoBehaviour {
             rigidbody.velocity = rigidbody.velocity / MoveDecell;
         }
 
+        //Set magnitude reference variable
+        SpeedMagnitude = rigidbody.velocity.magnitude;
+
     }
 
     void SlopePlysics()
@@ -328,10 +366,12 @@ public class PlayerBhysics : MonoBehaviour {
             if (!isRolling)
             {
                 Addsped = GroundNormal * LandingConversionFactor;
+                StickToGround(GroundStickingPower);
             }
             else
             {
                 Addsped = (GroundNormal * LandingConversionFactor) * RollingLandingBoost;
+                StickToGround(GroundStickingPower * RollingLandingBoost);
                 sounds.SpinningSound();
             }
 
@@ -394,7 +434,7 @@ public class PlayerBhysics : MonoBehaviour {
 
     }
 
-    void StickToGround(float StickingPower)
+    public void StickToGround(float StickingPower)
     {
         CollisionPoint.LookAt(transform.position);
         if (Physics.Raycast(transform.position, -Colliders.up, out hit, GroundStickingDistance) && !Input.GetButton("A"))
@@ -412,7 +452,11 @@ public class PlayerBhysics : MonoBehaviour {
 
     void AirMovement()
     {
+        //AddSpeed
         HandleGroundControl(1 , MoveInput);
+
+        //Get out of roll
+        isRolling = false;
 
         //Apply Gravity
         rigidbody.velocity = rigidbody.velocity + Gravity;
@@ -431,6 +475,13 @@ public class PlayerBhysics : MonoBehaviour {
 
         //Get set for landing
         WasOnAir = true;
+
+        //Air Skidding  
+        if (b_normalSpeed < 0 && !Grounded)
+        {
+            Debug.Log("skedInair");
+            AddVelocity((MoveInput * 10) * MoveAccell);
+        }
     }
 
     private void OnDrawGizmosSelected()

@@ -84,6 +84,7 @@ public class Action03_SpinDash : MonoBehaviour {
         }
         else
         {
+            Player.isRolling = true;
             sounds.SpinDashReleaseSound();
             Player.rigidbody.velocity = charge * (RawPrevInput);
             Actions.ChangeAction(0);
@@ -101,6 +102,10 @@ public class Action03_SpinDash : MonoBehaviour {
         CharacterAnimator.SetFloat("NormalSpeed", 0);
         BallAnimator.SetFloat("SpinCharge", charge);
         BallAnimator.speed = charge * BallAnimationSpeedMultiplier;
+
+        //Check if rolling
+        //if (Player.Grounded && Player.isRolling) { CharacterAnimator.SetInteger("Action", 1); }
+        //CharacterAnimator.SetBool("isRolling", Player.isRolling);
 
         //Rotation
 

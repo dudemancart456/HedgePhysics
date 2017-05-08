@@ -18,19 +18,24 @@ public class Objects_Interaction : MonoBehaviour {
 
     public GameObject RingCollectParticle;
     public Material SpeedPadTrack;
+    public Material DashRingMaterial;
 
     [Header("Enemies")]
 
     public float BouncingPower;
     public bool StopOnHommingAttackHit;
     public bool StopOnHit;
-    bool updateTargets;
+    public bool updateTargets { get; set; }
 
     [Header("UI objects")]
 
     public Text RingsCounter;
 
-    public int RingAmmount { get; set; }
+    public static int RingAmmount { get; set; }
+
+    MovingPlatformControl Platform;
+    Vector3 TranslateOnPlatform;
+    public Color DashRingLightsColor;
 
     void Update()
     {
@@ -44,7 +49,19 @@ public class Objects_Interaction : MonoBehaviour {
 
         //Set speed pad trackpad's offset
         SpeedPadTrack.SetTextureOffset("_MainTex", new Vector2(0, -Time.time) * 3);
+        DashRingMaterial.SetColor("_EmissionColor", (Mathf.Sin(Time.time * 15) * 1.3f) * DashRingLightsColor);
+    }
 
+    void FixedUpdate()
+    {
+        if(Platform != null)
+        {
+            transform.position += (-Platform.TranslateVector);
+        }
+        if (!Player.Grounded)
+        {
+            Platform = null;
+        }
     }
 
 	public void OnTriggerEnter(Collider col)
@@ -54,6 +71,13 @@ public class Objects_Interaction : MonoBehaviour {
         {
             if(col.GetComponent<SpeedPadData>() != null)
             {
+                transform.rotation = Quaternion.identity;
+                //ResetPlayerRotation
+                if (col.GetComponent<SpeedPadData>().ResetRotation)
+                {
+                    transform.rotation = Quaternion.identity;
+                }
+
                 if (col.GetComponent<SpeedPadData>().LockToDirection)
                 {
                     Player.rigidbody.velocity = Vector3.zero;
@@ -62,6 +86,16 @@ public class Objects_Interaction : MonoBehaviour {
                 else
                 {
                     Player.AddVelocity(col.transform.forward * col.GetComponent<SpeedPadData>().Speed);
+                }
+                if (col.GetComponent<SpeedPadData>().Snap)
+                {
+                    transform.position = col.transform.position;
+                }
+                if (col.GetComponent<SpeedPadData>().isDashRing)
+                {
+                    Actions.ChangeAction(0);
+                    Actions.Action00.CharacterAnimator.SetBool("Grounded", false);
+                    Actions.Action00.CharacterAnimator.SetInteger("Action", 0);
                 }
 
                 if (col.GetComponent<SpeedPadData>().LockControl)
@@ -109,7 +143,7 @@ public class Objects_Interaction : MonoBehaviour {
                 
                 if (col.transform.parent.GetComponent<EnemyHealth>() != null)
                 {
-                    if (Player.rigidbody.velocity.y < 0 && !Player.isRolling)
+                    if (!Player.isRolling)
                     {
                         Vector3 newSpeed = new Vector3(1, 0, 1);
 
@@ -142,26 +176,38 @@ public class Objects_Interaction : MonoBehaviour {
             }
             else
             {
-                if (!Actions.Action04Control.IsHurt)
+                if (!Actions.Action04Control.IsHurt && Actions.Action != 4)
                 {
-                    if (RingAmmount > 0)
+
+                    if (!Monitors_Interactions.HasShield)
                     {
-                        //LoseRings
-                        Sounds.RingLossSound();
-                        Actions.Action04Control.GetHurt();
-                        Actions.ChangeAction(4);
-                        Actions.Action04.InitialEvents();
-                    }
-                    else
-                    {
-                        //Die
-                        if (!Actions.Action04Control.isDead)
+                        if (RingAmmount > 0)
                         {
-                            Sounds.DieSound();
-                            Actions.Action04Control.isDead = true;
+                            //LoseRings
+                            Sounds.RingLossSound();
+                            Actions.Action04Control.GetHurt();
                             Actions.ChangeAction(4);
                             Actions.Action04.InitialEvents();
                         }
+                        if (RingAmmount <= 0)
+                        {
+                            //Die
+                            if (!Actions.Action04Control.isDead)
+                            {
+                                Sounds.DieSound();
+                                Actions.Action04Control.isDead = true;
+                                Actions.ChangeAction(4);
+                                Actions.Action04.InitialEvents();
+                            }
+                        }
+                    }
+                    if (Monitors_Interactions.HasShield)
+                    {
+                        //Lose Shield
+                        Actions.Action04.sounds.SpikedSound();
+                        Monitors_Interactions.HasShield = false;
+                        Actions.ChangeAction(4);
+                        Actions.Action04.InitialEvents();
                     }
                 }
             }
@@ -202,6 +248,18 @@ public class Objects_Interaction : MonoBehaviour {
             }
         }
 
+    }
+
+    public void OnTriggerStay(Collider col)
+    {
+        if(col.gameObject.tag == "MovingPlatform")
+        {
+            Platform = col.gameObject.GetComponent<MovingPlatformControl>();
+        }
+        else
+        {
+            Platform = null;
+        }
     }
 
 }

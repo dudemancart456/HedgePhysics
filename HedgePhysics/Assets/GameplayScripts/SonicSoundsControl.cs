@@ -18,6 +18,7 @@ public class SonicSoundsControl : MonoBehaviour {
     public AudioClip SpinDashRelease;
     public AudioClip RingLoss;
     public AudioClip Die;
+    public AudioClip Spiked;
 
     public float pitchBendingRate = 1;
 
@@ -75,6 +76,11 @@ public class SonicSoundsControl : MonoBehaviour {
     public void DieSound()
     {
         Source3.clip = Die;
+        Source3.Play();
+    }
+    public void SpikedSound()
+    {
+        Source3.clip = Spiked;
         Source3.Play();
     }
 

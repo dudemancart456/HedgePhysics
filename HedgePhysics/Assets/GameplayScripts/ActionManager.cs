@@ -15,6 +15,7 @@ public class ActionManager : MonoBehaviour {
     public HomingAttackControl Action02Control;
     public Action04_Hurt Action04;
     public HurtControl Action04Control;
+    public Action05_Rail Action05;
 
     //Etc
 
@@ -37,6 +38,7 @@ public class ActionManager : MonoBehaviour {
         Action03.enabled = false;
         Action03.ResetSpinDashVariables();
         Action04.enabled = false;
+        Action05.enabled = false;
     }
 
     //Call this function to change the action
@@ -64,6 +66,9 @@ public class ActionManager : MonoBehaviour {
                 break;
             case 4:
                 Action04.enabled = true;
+                break;
+            case 5:
+                Action05.enabled = true;
                 break;
             default:
                 Debug.Log("Action is not available.");
