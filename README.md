@@ -2,9 +2,11 @@
 
 ![logo](http://i.imgur.com/4w4Scv2.png)
 
-https://www.youtube....h?v=jIEixV1q5-M
-https://www.youtube....h?v=kGeWiyPKbbI
-[videos are outdated]
+# Videos
+
+* https://www.youtube....h?v=jIEixV1q5-M
+* https://www.youtube....h?v=kGeWiyPKbbI
+*[videos are outdated]*
 
 ## Description
 
