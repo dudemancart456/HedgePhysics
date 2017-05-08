@@ -4,8 +4,8 @@
 
 ## Videos
 
-* https://www.youtube....h?v=jIEixV1q5-M
-* https://www.youtube....h?v=kGeWiyPKbbI
+* https://www.youtube.com/watch?v=jIEixV1q5-M
+* https://www.youtube.com/watch?v=kGeWiyPKbbI
 *[videos are outdated]*
 
 ## Description
