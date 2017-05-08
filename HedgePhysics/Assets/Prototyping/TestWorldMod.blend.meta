@@ -1,0 +1,197 @@
+fileFormatVersion: 2
+guid: c91b81b312a29634b8ead3f7eb9c8dcd
+timeCreated: 1476928494
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Plane
+    100004: Plane_001
+    100006: Plane_002
+    100008: Cube
+    100010: Plane_003
+    100012: Plane_004
+    100014: Cylinder
+    100016: Cube_001
+    100018: Cube_002
+    100020: NurbsPath
+    100022: NurbsPath_001
+    100024: Cube_003
+    100026: Cube_004
+    100028: Cube_005
+    100030: NurbsPath_002
+    100032: NurbsPath_003
+    100034: NurbsPath_004
+    100036: Plane_005
+    100038: Sphere
+    100040: Sphere_001
+    100042: Cube_006
+    100044: Cube_007
+    100046: NurbsPath_005
+    100048: NurbsPath_006
+    400000: //RootNode
+    400002: Plane
+    400004: Plane_001
+    400006: Plane_002
+    400008: Cube
+    400010: Plane_003
+    400012: Plane_004
+    400014: Cylinder
+    400016: Cube_001
+    400018: Cube_002
+    400020: NurbsPath
+    400022: NurbsPath_001
+    400024: Cube_003
+    400026: Cube_004
+    400028: Cube_005
+    400030: NurbsPath_002
+    400032: NurbsPath_003
+    400034: NurbsPath_004
+    400036: Plane_005
+    400038: Sphere
+    400040: Sphere_001
+    400042: Cube_006
+    400044: Cube_007
+    400046: NurbsPath_005
+    400048: NurbsPath_006
+    2300000: //RootNode
+    2300002: Plane
+    2300004: Plane_001
+    2300006: Plane_002
+    2300008: Cube
+    2300010: Plane_003
+    2300012: Plane_004
+    2300014: Cylinder
+    2300016: Cube_001
+    2300018: Cube_002
+    2300020: NurbsPath
+    2300022: NurbsPath_001
+    2300024: Cube_003
+    2300026: Cube_004
+    2300028: Cube_005
+    2300030: NurbsPath_002
+    2300032: NurbsPath_003
+    2300034: NurbsPath_004
+    2300036: Plane_005
+    2300038: Sphere
+    2300040: Sphere_001
+    2300042: Cube_006
+    2300044: Cube_007
+    2300046: NurbsPath_005
+    2300048: NurbsPath_006
+    3300000: //RootNode
+    3300002: Plane
+    3300004: Plane_001
+    3300006: Plane_002
+    3300008: Cube
+    3300010: Plane_003
+    3300012: Plane_004
+    3300014: Cylinder
+    3300016: Cube_001
+    3300018: Cube_002
+    3300020: NurbsPath
+    3300022: NurbsPath_001
+    3300024: Cube_003
+    3300026: Cube_004
+    3300028: Cube_005
+    3300030: NurbsPath_002
+    3300032: NurbsPath_003
+    3300034: NurbsPath_004
+    3300036: Plane_005
+    3300038: Sphere
+    3300040: Sphere_001
+    3300042: Cube_006
+    3300044: Cube_007
+    3300046: NurbsPath_005
+    3300048: NurbsPath_006
+    4300000: Plane
+    4300002: Plane_002
+    4300004: Plane_001
+    4300006: Cube
+    4300008: Plane_004
+    4300010: Plane_003
+    4300012: Cylinder
+    4300014: NurbsPath_001
+    4300016: Cube_002
+    4300018: NurbsPath
+    4300020: Cube_001
+    4300022: NurbsPath_004
+    4300024: Cube_005
+    4300026: Plane_005
+    4300028: NurbsPath_003
+    4300030: Cube_004
+    4300032: NurbsPath_002
+    4300034: Cube_003
+    4300036: Sphere
+    4300038: Sphere_001
+    4300040: NurbsPath_006
+    4300042: Cube_007
+    4300044: NurbsPath_005
+    4300046: Cube_006
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
