@@ -1,4 +1,6 @@
-﻿This scene shows a basic implementation of "deferred decals" - i.e.
+# DefferedDecals
+
+This scene shows a basic implementation of "deferred decals" - i.e.
 it shows how command buffers can be used to modify the deferred
 shading g-buffer before lighting is done.
 
