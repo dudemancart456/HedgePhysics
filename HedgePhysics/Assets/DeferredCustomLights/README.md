@@ -1,4 +1,6 @@
-﻿This scene shows a basic implementation of "custom deferred lights" - i.e.
+# DeferredCustomLights
+
+This scene shows a basic implementation of "custom deferred lights" - i.e.
 it shows how command buffers can be used to implement custom lights that
 compute scene illumination in deferred shading.
 
