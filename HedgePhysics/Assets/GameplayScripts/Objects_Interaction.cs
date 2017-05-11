@@ -2,11 +2,9 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class Objects_Interaction : MonoBehaviour {
-
-    [Header("For Rings, Srpings and so on")]
-
-    public PlayerBhysics Player;
+public class Objects_Interaction : MonoBehaviour
+{
+    [Header("For Rings, Srpings and so on")] public PlayerBhysics Player;
     public HedgeCamera Cam;
     public SonicSoundsControl Sounds;
     public ActionManager Actions;
@@ -20,9 +18,7 @@ public class Objects_Interaction : MonoBehaviour {
     public Material SpeedPadTrack;
     public Material DashRingMaterial;
 
-    [Header("Enemies")]
-
-    public float BouncingPower;
+    [Header("Enemies")] public float BouncingPower;
     public bool StopOnHommingAttackHit;
     public bool StopOnHit;
     public bool updateTargets { get; set; }
@@ -30,9 +26,7 @@ public class Objects_Interaction : MonoBehaviour {
     public float EnemyDamageShakeAmmount;
     public float EnemyHitShakeAmmount;
 
-    [Header("UI objects")]
-
-    public Text RingsCounter;
+    [Header("UI objects")] public Text RingsCounter;
 
     public static int RingAmmount { get; set; }
 
@@ -57,7 +51,7 @@ public class Objects_Interaction : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if(Platform != null)
+        if (Platform != null)
         {
             transform.position += (-Platform.TranslateVector);
         }
@@ -67,12 +61,12 @@ public class Objects_Interaction : MonoBehaviour {
         }
     }
 
-	public void OnTriggerEnter(Collider col)
+    public void OnTriggerEnter(Collider col)
     {
         //Speed Pads Collision
-        if(col.tag == "SpeedPad")
+        if (col.tag == "SpeedPad")
         {
-            if(col.GetComponent<SpeedPadData>() != null)
+            if (col.GetComponent<SpeedPadData>() != null)
             {
                 transform.rotation = Quaternion.identity;
                 //ResetPlayerRotation
@@ -107,7 +101,6 @@ public class Objects_Interaction : MonoBehaviour {
                     Cam.SetCamera(dir, 2.5f, 20, 5f, 1);
                     col.GetComponent<AudioSource>().Play();
                 }
-
             }
         }
 
@@ -132,7 +125,7 @@ public class Objects_Interaction : MonoBehaviour {
         }
 
         //Hazard
-        if(col.tag == "Hazard")
+        if (col.tag == "Hazard")
         {
             DamagePlayer();
             HedgeCamera.Shakeforce = EnemyDamageShakeAmmount;
@@ -150,7 +143,6 @@ public class Objects_Interaction : MonoBehaviour {
             }
             if (Actions.Action00.CharacterAnimator.GetInteger("Action") == 1)
             {
-                
                 if (col.transform.parent.GetComponent<EnemyHealth>() != null)
                 {
                     if (!Player.isRolling)
@@ -163,7 +155,7 @@ public class Objects_Interaction : MonoBehaviour {
                             newSpeed = Vector3.Scale(Player.rigidbody.velocity, newSpeed);
                             newSpeed.y = BouncingPower;
                         }
-                        else if(StopOnHit)
+                        else if (StopOnHit)
                         {
                             newSpeed = new Vector3(0, 0, 0);
                             newSpeed = Vector3.Scale(Player.rigidbody.velocity, newSpeed);
@@ -181,10 +173,9 @@ public class Objects_Interaction : MonoBehaviour {
                     col.transform.parent.GetComponent<EnemyHealth>().DealDamage(1);
                     updateTargets = true;
                     Actions.ChangeAction(0);
-                    
                 }
             }
-            else if(Actions.Action != 3)
+            else if (Actions.Action != 3)
             {
                 DamagePlayer();
             }
@@ -200,7 +191,10 @@ public class Objects_Interaction : MonoBehaviour {
                 if (spring.IsAdditive)
                 {
                     transform.position = col.transform.GetChild(0).position;
-                    if (col.GetComponent<AudioSource>()) { col.GetComponent<AudioSource>().Play(); }
+                    if (col.GetComponent<AudioSource>())
+                    {
+                        col.GetComponent<AudioSource>().Play();
+                    }
                     Actions.Action00.CharacterAnimator.SetInteger("Action", 0);
                     Actions.Action02.HomingAvailable = true;
                     Player.rigidbody.velocity += (spring.transform.up * spring.SpringForce);
@@ -210,7 +204,10 @@ public class Objects_Interaction : MonoBehaviour {
                 else
                 {
                     transform.position = col.transform.GetChild(0).position;
-                    if (col.GetComponent<AudioSource>()) { col.GetComponent<AudioSource>().Play(); }
+                    if (col.GetComponent<AudioSource>())
+                    {
+                        col.GetComponent<AudioSource>().Play();
+                    }
                     Actions.Action00.CharacterAnimator.SetInteger("Action", 0);
                     Actions.Action02.HomingAvailable = true;
                     Player.rigidbody.velocity = spring.transform.up * spring.SpringForce;
@@ -224,7 +221,6 @@ public class Objects_Interaction : MonoBehaviour {
                 }
             }
         }
-
     }
 
     public void OnTriggerStay(Collider col)
@@ -249,7 +245,6 @@ public class Objects_Interaction : MonoBehaviour {
     {
         if (!Actions.Action04Control.IsHurt && Actions.Action != 4)
         {
-
             if (!Monitors_Interactions.HasShield)
             {
                 if (RingAmmount > 0)

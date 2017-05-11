@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerBinput : MonoBehaviour {
-
+public class PlayerBinput : MonoBehaviour
+{
     private PlayerBhysics Player; // Reference to the ball controller.
     CameraControl Cam;
     ActionManager Actions;
@@ -50,8 +50,12 @@ public class PlayerBinput : MonoBehaviour {
     {
         // Get curve position
 
-        InputLerpSpeed = InputLerpingRateOverSpeed.Evaluate((Player.rigidbody.velocity.sqrMagnitude / Player.MaxSpeed) / Player.MaxSpeed);
-        UtopiaLerpingSpeed = UtopiaInputLerpingRateOverSpeed.Evaluate((Player.rigidbody.velocity.sqrMagnitude / Player.MaxSpeed) / Player.MaxSpeed);
+        InputLerpSpeed =
+            InputLerpingRateOverSpeed.Evaluate((Player.rigidbody.velocity.sqrMagnitude / Player.MaxSpeed) /
+                                               Player.MaxSpeed);
+        UtopiaLerpingSpeed =
+            UtopiaInputLerpingRateOverSpeed.Evaluate((Player.rigidbody.velocity.sqrMagnitude / Player.MaxSpeed) /
+                                                     Player.MaxSpeed);
 
         // Get the axis and jump input.
 
@@ -61,17 +65,18 @@ public class PlayerBinput : MonoBehaviour {
         // calculate move direction
         if (cam != null)
         {
-
             Vector3 moveInp = new Vector3(h, 0, v);
 
             InitialInputMag = moveInp.sqrMagnitude;
-            InitialLerpedInput = Mathf.Lerp(InitialLerpedInput, InitialInputMag, Time.deltaTime * UtopiaInitialInputLerpSpeed);
+            InitialLerpedInput = Mathf.Lerp(InitialLerpedInput, InitialInputMag,
+                Time.deltaTime * UtopiaInitialInputLerpSpeed);
 
             if (!UtopiaTurning)
             {
                 if (moveInp != Vector3.zero)
                 {
-                    Vector3 transformedInput = Quaternion.FromToRotation(cam.up, Player.GroundNormal) * (cam.rotation * moveInp);
+                    Vector3 transformedInput = Quaternion.FromToRotation(cam.up, Player.GroundNormal) *
+                                               (cam.rotation * moveInp);
                     transformedInput = transform.InverseTransformDirection(transformedInput);
                     transformedInput.y = 0.0f;
                     Player.RawInput = transformedInput;
@@ -79,7 +84,8 @@ public class PlayerBinput : MonoBehaviour {
                 }
                 else
                 {
-                    Vector3 transformedInput = Quaternion.FromToRotation(cam.up, Player.GroundNormal) * (cam.rotation * moveInp);
+                    Vector3 transformedInput = Quaternion.FromToRotation(cam.up, Player.GroundNormal) *
+                                               (cam.rotation * moveInp);
                     transformedInput = transform.InverseTransformDirection(transformedInput);
                     transformedInput.y = 0.0f;
                     Player.RawInput = transformedInput;
@@ -90,7 +96,8 @@ public class PlayerBinput : MonoBehaviour {
             {
                 if (moveInp != Vector3.zero)
                 {
-                    Vector3 transformedInput = Quaternion.FromToRotation(cam.up, Player.GroundNormal) * (cam.rotation * moveInp);
+                    Vector3 transformedInput = Quaternion.FromToRotation(cam.up, Player.GroundNormal) *
+                                               (cam.rotation * moveInp);
                     transformedInput = transform.InverseTransformDirection(transformedInput);
                     transformedInput.y = 0.0f;
                     Player.RawInput = transformedInput;
@@ -98,7 +105,8 @@ public class PlayerBinput : MonoBehaviour {
                 }
                 else
                 {
-                    Vector3 transformedInput = Quaternion.FromToRotation(cam.up, Player.GroundNormal) * (cam.rotation * moveInp);
+                    Vector3 transformedInput = Quaternion.FromToRotation(cam.up, Player.GroundNormal) *
+                                               (cam.rotation * moveInp);
                     transformedInput = transform.InverseTransformDirection(transformedInput);
                     transformedInput.y = 0.0f;
                     Player.RawInput = transformedInput;
@@ -121,7 +129,6 @@ public class PlayerBinput : MonoBehaviour {
                 }
                 move = UtopiaInput;
             }
-
         }
 
         //Lock Input Funcion
@@ -129,15 +136,12 @@ public class PlayerBinput : MonoBehaviour {
         {
             LockedInputFunction();
         }
-
     }
 
     void FixedUpdate()
     {
-
         Debug.DrawRay(transform.position, move, Color.cyan);
         Player.MoveInput = (move);
-
     }
 
     void LockedInputFunction()
@@ -149,7 +153,7 @@ public class PlayerBinput : MonoBehaviour {
 
         if (LockCam)
         {
-            Cam.Cam.FollowDirection(3, 14, -10,0);
+            Cam.Cam.FollowDirection(3, 14, -10, 0);
         }
 
         if (Actions.Action != 0)
@@ -171,5 +175,4 @@ public class PlayerBinput : MonoBehaviour {
         LockInput = true;
         LockCam = lockCam;
     }
-
 }

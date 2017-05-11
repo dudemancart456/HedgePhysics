@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerSphysics : MonoBehaviour {
-
+public class PlayerSphysics : MonoBehaviour
+{
     public Vector3 XYZSpeed { get; set; }
     public Vector3 XYZFloat;
     public Vector3 Gravity;
@@ -21,18 +21,22 @@ public class PlayerSphysics : MonoBehaviour {
 
     void FixedUpdate()
     {
-
         MoveCharacter();
         DownSensor();
-
     }
 
     //=======
 
     void MoveCharacter()
     {
-        if (Grounded) { GroundPhysics(); }
-        else { AirPhysics(); }
+        if (Grounded)
+        {
+            GroundPhysics();
+        }
+        else
+        {
+            AirPhysics();
+        }
     }
 
     void DownSensor()
@@ -47,17 +51,16 @@ public class PlayerSphysics : MonoBehaviour {
             XYZFloat += new Vector3(0, 0.003f, 0);
             MoveCharacter();
             Collider[] hitInside = Physics.OverlapSphere(DownSensorPos.position, SensorsRadius);
-            if(hitInside.Length <= 0)
+            if (hitInside.Length <= 0)
             {
                 XYZFloat -= new Vector3(0, 0.003f, 0);
                 break;
             }
         }
-
     }
+
     void GroundPhysics()
     {
-
         DownRay.origin = DownSensorPos.position;
         DownRay.direction = -DownSensorPos.up;
         RaycastHit RayHit;
@@ -69,6 +72,7 @@ public class PlayerSphysics : MonoBehaviour {
 
         SlopePhysics();
     }
+
     void SlopePhysics()
     {
         //Move

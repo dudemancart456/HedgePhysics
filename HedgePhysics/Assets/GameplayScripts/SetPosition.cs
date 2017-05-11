@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SetPosition : MonoBehaviour {
-
+public class SetPosition : MonoBehaviour
+{
     public Transform TargetPosition;
     public Vector3 Offset;
 
     Vector3 DynamicOffset;
     bool Dynamic;
 
-	void Update () {
-
+    void Update()
+    {
         if (!Dynamic)
         {
             transform.position = TargetPosition.position + Offset;
@@ -19,8 +19,7 @@ public class SetPosition : MonoBehaviour {
         {
             transform.position = TargetPosition.position + DynamicOffset;
         }
-
-	}
+    }
 
     public void UseDynamicOffset(Vector3 offset)
     {

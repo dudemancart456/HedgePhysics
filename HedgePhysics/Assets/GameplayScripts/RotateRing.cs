@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RotateRing : MonoBehaviour {
-
+public class RotateRing : MonoBehaviour
+{
     public Vector3 RotateSpeed;
     public float InitialRandomRotationAmm;
     public bool SetBasedOnXpos = true;
@@ -18,9 +18,8 @@ public class RotateRing : MonoBehaviour {
         }
     }
 
-	void Update () {
-
+    void Update()
+    {
         transform.Rotate(RotateSpeed * Time.deltaTime);
-
     }
 }

@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ShieldGiverControl : MonoBehaviour {
-
+public class ShieldGiverControl : MonoBehaviour
+{
     public float Duration = 1;
     float counter;
     bool hasadded = false;
 
     void Update()
     {
-
         counter += Time.deltaTime;
         if (counter > Duration)
         {
@@ -24,7 +23,5 @@ public class ShieldGiverControl : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-
     }
-
 }

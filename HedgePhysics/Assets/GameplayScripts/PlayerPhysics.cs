@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerPhysics : MonoBehaviour {
-
+public class PlayerPhysics : MonoBehaviour
+{
     public Vector3 XYZSpeed { get; set; }
     public Vector3 XYZFloat { get; set; }
     public Vector3 Gravity;
@@ -25,9 +25,14 @@ public class PlayerPhysics : MonoBehaviour {
         SetOffsets();
         DownCast();
 
-        if (Grounded) { GroundPhysics(); }
-        else { AirPhysics(); }
-
+        if (Grounded)
+        {
+            GroundPhysics();
+        }
+        else
+        {
+            AirPhysics();
+        }
     }
 
     //=======
@@ -37,30 +42,30 @@ public class PlayerPhysics : MonoBehaviour {
         XYZFloat += XYZSpeed;
         transform.position = XYZFloat;
     }
+
     void SetOffsets()
     {
         //DOWN
         DownRayOffset = (transform.position - DownRayPosition.GetChild(0).position);
-
     }
 
     void DownCast()
     {
-
         DownRay.origin = DownRayPosition.position;
         DownRay.direction = -DownRayPosition.up;
         RaycastHit RayHit;
 
         while (Physics.Raycast(DownRay, out RayHit, 10f))
         {
-            
         }
     }
+
     void GroundPhysics()
     {
         transform.position = GroundPosition;
         SlopePhysics();
     }
+
     void AirPhysics()
     {
         //Apply Gravity
@@ -69,9 +74,9 @@ public class PlayerPhysics : MonoBehaviour {
         //ResetAngle
         transform.rotation = Quaternion.identity;
     }
+
     void SlopePhysics()
     {
         transform.rotation = Quaternion.FromToRotation(transform.up, GroundNormal);
     }
-
 }

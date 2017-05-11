@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AngleTest : MonoBehaviour {
-
+public class AngleTest : MonoBehaviour
+{
     public Vector3 Speed;
     public Vector3 AngleSined;
     public Vector3 ModifiedQuart;
@@ -15,14 +15,13 @@ public class AngleTest : MonoBehaviour {
     public float divideAngle;
 
 
-
     void Start()
     {
         rigid = GetComponent<Rigidbody>();
     }
 
-	void FixedUpdate () {
-
+    void FixedUpdate()
+    {
         ModifiedQuart.x = transform.rotation.x + 1;
         ModifiedQuart.y = transform.rotation.y;
         ModifiedQuart.z = transform.rotation.z + 1;
@@ -42,7 +41,5 @@ public class AngleTest : MonoBehaviour {
         transform.rotation.ToAngleAxis(out Angle, out AngleToAngle);
 
         rigid.velocity = Speed;
-
-	
-	}
+    }
 }

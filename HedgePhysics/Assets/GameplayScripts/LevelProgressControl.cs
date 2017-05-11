@@ -2,8 +2,8 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class LevelProgressControl : MonoBehaviour {
-
+public class LevelProgressControl : MonoBehaviour
+{
     public Vector3 ResumePosition { get; set; }
     public Quaternion ResumeRotation { get; set; }
     public Transform ResumeTransform;
@@ -23,12 +23,11 @@ public class LevelProgressControl : MonoBehaviour {
 
     bool firstime = false;
 
-    void Start () {
-
+    void Start()
+    {
         Cam = GetComponent<CameraControl>();
         Actions = GetComponent<ActionManager>();
         Player = GetComponent<PlayerBhysics>();
-
     }
 
     void Update()
@@ -40,13 +39,14 @@ public class LevelProgressControl : MonoBehaviour {
         {
             Player.MoveInput = Vector3.zero;
             readyCount += Time.deltaTime;
-            if(readyCount > 1.5f)
+            if (readyCount > 1.5f)
             {
                 Actions.Action04Control.enabled = false;
                 Color alpha = Color.black;
-                Actions.Action04Control.FadeOutImage.color = Color.Lerp(Actions.Action04Control.FadeOutImage.color, alpha, Time.fixedTime * 0.1f);
+                Actions.Action04Control.FadeOutImage.color = Color.Lerp(Actions.Action04Control.FadeOutImage.color,
+                    alpha, Time.fixedTime * 0.1f);
             }
-            if(readyCount > 2.6f)
+            if (readyCount > 2.6f)
             {
                 LoadingScreenControl.StageName1 = NextLevelNameLeft;
                 LoadingScreenControl.StageName2 = NextLevelNameRight;
@@ -75,6 +75,7 @@ public class LevelProgressControl : MonoBehaviour {
         dir.y = 0.2f;
         Cam.Cam.SetCamera(-9);
     }
+
     public void SetCheckPoint(Transform position)
     {
         ResumePosition = position.position;
@@ -84,7 +85,7 @@ public class LevelProgressControl : MonoBehaviour {
 
     public void OnTriggerEnter(Collider col)
     {
-        if(col.tag == "Checkpoint")
+        if (col.tag == "Checkpoint")
         {
             if (col.GetComponent<CheckPointData>() != null)
             {

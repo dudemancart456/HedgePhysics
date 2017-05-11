@@ -2,8 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class HurtControl : MonoBehaviour {
-
+public class HurtControl : MonoBehaviour
+{
     ActionManager Actions;
     PlayerBinput Inp;
     LevelProgressControl Level;
@@ -34,8 +34,8 @@ public class HurtControl : MonoBehaviour {
     public Image FadeOutImage;
     Vector3 InitialDir;
 
-	void Awake () {
-
+    void Awake()
+    {
         Player = GetComponent<PlayerBhysics>();
         Level = GetComponent<LevelProgressControl>();
         counter = InvencibilityTime;
@@ -47,11 +47,11 @@ public class HurtControl : MonoBehaviour {
         Inp = GetComponent<PlayerBinput>();
         this.enabled = true;
     }
-	
-	void FixedUpdate () {
 
+    void FixedUpdate()
+    {
         counter += 1;
-        if(counter < InvencibilityTime)
+        if (counter < InvencibilityTime)
         {
             IsInvencible = true;
             SkinFlicker();
@@ -65,22 +65,25 @@ public class HurtControl : MonoBehaviour {
 
         if (releasingRings)
         {
-            if(RingsToRelease > 30) { RingsToRelease = 30; }
+            if (RingsToRelease > 30)
+            {
+                RingsToRelease = 30;
+            }
             RingLoss();
         }
 
         //IsDead things
-        if(isDead == true)
+        if (isDead == true)
         {
             Death();
         }
-        else if(counter > 30)
+        else if (counter > 30)
         {
             Color alpha = Color.black;
             alpha.a = 0;
             FadeOutImage.color = Color.Lerp(FadeOutImage.color, alpha, 0.5f);
         }
-	}
+    }
 
     void Death()
     {
@@ -96,11 +99,11 @@ public class HurtControl : MonoBehaviour {
             alpha.a = 1;
             FadeOutImage.color = Color.Lerp(FadeOutImage.color, alpha, 0.5f);
         }
-        if(deadCounter  > 150)
+        if (deadCounter > 150)
         {
             if (Level.CurrentCheckPoint)
             {
-                Cam.Cam.SetCamera(Level.CurrentCheckPoint.transform.forward, 2,10,10);
+                Cam.Cam.SetCamera(Level.CurrentCheckPoint.transform.forward, 2, 10, 10);
             }
             else
             {
@@ -119,7 +122,7 @@ public class HurtControl : MonoBehaviour {
     void SkinFlicker()
     {
         flickerCount += FlickerSpeed;
-        if(flickerCount < 0)
+        if (flickerCount < 0)
         {
             ToggleSkin(false);
         }
@@ -127,7 +130,7 @@ public class HurtControl : MonoBehaviour {
         {
             ToggleSkin(true);
         }
-        if(flickerCount > 10)
+        if (flickerCount > 10)
         {
             flickerCount = -10;
         }
@@ -137,7 +140,7 @@ public class HurtControl : MonoBehaviour {
     {
         Objects_Interaction.RingAmmount = 0;
 
-        if(RingsToRelease > 0)
+        if (RingsToRelease > 0)
         {
             Vector3 pos = transform.position;
             pos.y += 1;
@@ -145,7 +148,8 @@ public class HurtControl : MonoBehaviour {
             movingRing = Instantiate(MovingRing, pos, Quaternion.identity);
             movingRing.transform.parent = null;
             movingRing.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            movingRing.GetComponent<Rigidbody>().AddForce((releaseDirection.transform.forward * RingReleaseSpeed), ForceMode.Acceleration);
+            movingRing.GetComponent<Rigidbody>()
+                .AddForce((releaseDirection.transform.forward * RingReleaseSpeed), ForceMode.Acceleration);
             releaseDirection.transform.Rotate(0, RingArcSpeed, 0);
             RingsToRelease -= 1;
         }
@@ -168,7 +172,7 @@ public class HurtControl : MonoBehaviour {
         IsHurt = true;
         counter = 0;
 
-        if(Objects_Interaction.RingAmmount > 0 && !releasingRings)
+        if (Objects_Interaction.RingAmmount > 0 && !releasingRings)
         {
             RingsToRelease = Objects_Interaction.RingAmmount;
             releasingRings = true;
@@ -182,6 +186,7 @@ public class HurtControl : MonoBehaviour {
             Cam.Cam.SetCamera(-99);
         }
     }
+
     public void OnTriggerEnter(Collider col)
     {
         if (col.tag == "Pit")

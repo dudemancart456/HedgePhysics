@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyBhysics : MonoBehaviour {
-
+public class EnemyBhysics : MonoBehaviour
+{
     public Rigidbody rigidbody { get; set; }
     public float MoveAccell;
     public float MoveDecell;
@@ -32,7 +32,7 @@ public class EnemyBhysics : MonoBehaviour {
 
     public void GeneralPhysics()
     {
-        if(AppliedInput == Vector3.zero)
+        if (AppliedInput == Vector3.zero)
         {
             rigidbody.velocity = rigidbody.velocity / MoveDecell;
             b_normalSpeed = 0;
@@ -54,8 +54,9 @@ public class EnemyBhysics : MonoBehaviour {
 
     public void GroundMovement()
     {
-        AddVelocity( -transform.up * GroundStickingPower);
+        AddVelocity(-transform.up * GroundStickingPower);
     }
+
     public void AirMovement()
     {
         AddVelocity(Gravity);
@@ -114,14 +115,13 @@ public class EnemyBhysics : MonoBehaviour {
                     // (Reverse the inpit of inputdirection (on x and z, here)
                     normalVelocity = inputDirection * normalSpeed;
                 }
-
             }
 
             // Additionally, we can apply some drag on the tangent directions for
             // tighter control.
 
             tangentVelocity = Vector3.MoveTowards(tangentVelocity, Vector3.zero,
-            (TangentialDrag) * deltaTime * inputMagnitude);
+                (TangentialDrag) * deltaTime * inputMagnitude);
 
 
             // Compose local velocity back and compute velocity back into the Global frame.
@@ -139,8 +139,6 @@ public class EnemyBhysics : MonoBehaviour {
             b_normalSpeed = normalSpeed;
             b_normalVelocity = normalVelocity;
             b_tangentVelocity = tangentVelocity;
-
         }
     }
-
 }

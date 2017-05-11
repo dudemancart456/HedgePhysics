@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ActionManager : MonoBehaviour {
-
-
+public class ActionManager : MonoBehaviour
+{
     public int Action { get; set; }
 
     //Action Scrips, Always leave them in the correct order;
@@ -45,7 +44,6 @@ public class ActionManager : MonoBehaviour {
 
     public void ChangeAction(int ActionToChange)
     {
-
         Action = ActionToChange;
         DeactivateAllActions();
 
@@ -74,7 +72,5 @@ public class ActionManager : MonoBehaviour {
                 Debug.Log("Action is not available.");
                 break;
         }
-
     }
-
 }

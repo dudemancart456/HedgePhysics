@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FlameControl : MonoBehaviour {
-
+public class FlameControl : MonoBehaviour
+{
     Transform Player;
     public float Distance;
     public ParticleSystem Particle;
 
-	void Start () {
-
+    void Start()
+    {
         Player = GameObject.FindWithTag("Player").transform;
         InvokeRepeating("Flame", 0.1f, 1.0f);
     }

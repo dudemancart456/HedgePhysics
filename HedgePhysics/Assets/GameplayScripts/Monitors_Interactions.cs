@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Monitors_Interactions : MonoBehaviour {
-
+public class Monitors_Interactions : MonoBehaviour
+{
     Objects_Interaction Objects;
     PlayerBhysics Player;
     ActionManager Actions;
@@ -19,13 +19,13 @@ public class Monitors_Interactions : MonoBehaviour {
 
     bool firstTime = false;
 
-    void Start () {
-
+    void Start()
+    {
         Objects = GetComponent<Objects_Interaction>();
         Player = GetComponent<PlayerBhysics>();
         Actions = GetComponent<ActionManager>();
-
     }
+
     void FixedUpdate()
     {
         Once = 0;
@@ -60,7 +60,6 @@ public class Monitors_Interactions : MonoBehaviour {
         }
 
         NormalShieldMaterial.SetTextureOffset("_MainTex", new Vector2(0, -Time.time) * 3);
-
     }
 
     public void OnTriggerEnter(Collider col)
@@ -102,7 +101,7 @@ public class Monitors_Interactions : MonoBehaviour {
                 {
                     if (Once == -1)
                     {
-                        GameObject clone = (GameObject)Instantiate(RingGiver, transform.position, transform.rotation);
+                        GameObject clone = (GameObject) Instantiate(RingGiver, transform.position, transform.rotation);
                         clone.GetComponent<RingGiverControl>().Rings = col.GetComponent<MonitorData>().RingAmmount;
                         col.GetComponent<MonitorData>().DestroyMonitor();
                         updateTgts = true;
@@ -112,15 +111,12 @@ public class Monitors_Interactions : MonoBehaviour {
                 {
                     if (Once == -1)
                     {
-                        GameObject clone = (GameObject)Instantiate(ShieldGiver, transform.position, transform.rotation);
+                        GameObject clone = (GameObject) Instantiate(ShieldGiver, transform.position, transform.rotation);
                         col.GetComponent<MonitorData>().DestroyMonitor();
                         updateTgts = true;
                     }
                 }
             }
         }
-
-
     }
-
 }

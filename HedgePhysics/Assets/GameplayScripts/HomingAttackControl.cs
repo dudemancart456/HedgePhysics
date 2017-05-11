@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HomingAttackControl : MonoBehaviour {
-
+public class HomingAttackControl : MonoBehaviour
+{
     public bool HasTarget { get; set; }
     public static GameObject TargetObject { get; set; }
     public ActionManager Actions;
@@ -48,18 +48,17 @@ public class HomingAttackControl : MonoBehaviour {
 
     void FixedUpdate()
     {
-
         UpdateHomingTargets();
         //Prevent Homing attack spamming
 
         HomingCount += 1;
 
-        if(Actions.Action == 2)
+        if (Actions.Action == 2)
         {
             HomingAvailable = false;
             HomingCount = 0;
         }
-        if(HomingCount > 3)
+        if (HomingCount > 3)
         {
             HomingAvailable = true;
         }
@@ -78,7 +77,6 @@ public class HomingAttackControl : MonoBehaviour {
         {
             Icon.localScale = Vector3.zero;
         }
-
     }
 
     //This function will look for every possible homing attack target in the whole level. 
@@ -100,7 +98,7 @@ public class HomingAttackControl : MonoBehaviour {
         {
             Vector3 diff = go.transform.position - position;
             float curDistance = diff.sqrMagnitude;
-            
+
             if (curDistance < distance)
             {
                 HasTarget = true;
@@ -111,6 +109,4 @@ public class HomingAttackControl : MonoBehaviour {
         //Debug.Log(closest);
         return closest;
     }
-
-
 }

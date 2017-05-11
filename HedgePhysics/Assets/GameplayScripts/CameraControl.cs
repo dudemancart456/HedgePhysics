@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraControl : MonoBehaviour {
-
+public class CameraControl : MonoBehaviour
+{
     public HedgeCamera Cam;
     float InitialDistance;
 
@@ -11,11 +11,11 @@ public class CameraControl : MonoBehaviour {
         InitialDistance = Cam.CameraMaxDistance;
     }
 
-	public void OnTriggerEnter(Collider col)
+    public void OnTriggerEnter(Collider col)
     {
-        if(col.tag == "CameraTrigger")
+        if (col.tag == "CameraTrigger")
         {
-            if(col.GetComponent<CameraTriggerData>() != null)
+            if (col.GetComponent<CameraTriggerData>() != null)
             {
                 if (col.GetComponent<CameraTriggerData>().Type == TriggerType.LockToDirection)
                 {
@@ -52,7 +52,5 @@ public class CameraControl : MonoBehaviour {
                 }
             }
         }
-
     }
-
 }

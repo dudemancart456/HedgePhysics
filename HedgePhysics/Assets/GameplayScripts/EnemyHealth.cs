@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyHealth : MonoBehaviour {
-
+public class EnemyHealth : MonoBehaviour
+{
     public int MaxHealth = 1;
     int HP;
 
@@ -17,15 +17,14 @@ public class EnemyHealth : MonoBehaviour {
     public void DealDamage(int Damage)
     {
         HP -= Damage;
-        if(HP <= 0)
+        if (HP <= 0)
         {
-            if(SpawnReference != null)
+            if (SpawnReference != null)
             {
                 SpawnReference.ResartSpawner();
             }
-            GameObject.Instantiate(Explosion, transform.position,Quaternion.identity);
+            GameObject.Instantiate(Explosion, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
-
 }

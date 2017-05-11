@@ -5,7 +5,6 @@ using System.Collections;
 
 public class Rail : MonoBehaviour
 {
-
     public List<Vector3> RailPath;
     public List<Vector3> RailRotation;
     public Vector3[] RailArray { get; set; }
@@ -16,7 +15,6 @@ public class Rail : MonoBehaviour
 
     void Start()
     {
-
         //Get the path
 
         for (int i = 0; i < WaypointsHolder.childCount; i++)
@@ -26,7 +24,6 @@ public class Rail : MonoBehaviour
 
         RailArray = RailPath.ToArray();
         //RailRotationArray = RailRotation.ToArray();
-
     }
 
     public Vector3 LinearPosition(int seg, float speed)
@@ -35,7 +32,6 @@ public class Rail : MonoBehaviour
         Vector3 p2 = RailArray[seg + 1];
 
         return Vector3.Lerp(p1, p2, speed);
-
     }
 
     public Vector3 LinearRotation(int seg, float speed)
@@ -45,5 +41,4 @@ public class Rail : MonoBehaviour
 
         return Vector3.Lerp(p1, p2, speed);
     }
-
 }

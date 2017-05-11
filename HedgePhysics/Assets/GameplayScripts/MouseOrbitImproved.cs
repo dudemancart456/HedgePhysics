@@ -4,7 +4,6 @@ using System.Collections;
 [AddComponentMenu("Camera-Control/Mouse Orbit with zoom")]
 public class MouseOrbitImproved : MonoBehaviour
 {
-
     public Transform target;
     public float distance = 5.0f;
     public float xSpeed = 120.0f;
@@ -26,14 +25,12 @@ public class MouseOrbitImproved : MonoBehaviour
         Vector3 angles = transform.eulerAngles;
         x = angles.y;
         y = angles.x;
-
     }
 
     void LateUpdate()
     {
         if (target)
         {
-
             x += Input.GetAxis("Horizontal_right") * xSpeed * 0.01f;
             y -= Input.GetAxis("Vertical_right") * ySpeed * 0.005f;
             z = 0;

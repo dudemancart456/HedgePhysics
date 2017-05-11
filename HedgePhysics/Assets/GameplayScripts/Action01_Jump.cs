@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Action01_Jump : MonoBehaviour {
-
+public class Action01_Jump : MonoBehaviour
+{
     public Animator CharacterAnimator;
     PlayerBhysics Player;
     ActionManager Actions;
@@ -38,7 +38,7 @@ public class Action01_Jump : MonoBehaviour {
         transform.position += (InitialNormal * 0.3f);
 
         //Jump higher depending on the speed and the slope you're in
-        if(Player.rigidbody.velocity.y > 0 && Player.GroundNormal.y > 0)
+        if (Player.rigidbody.velocity.y > 0 && Player.GroundNormal.y > 0)
         {
             jumpSlopeSpeed = Player.rigidbody.velocity.y * JumpSlopeConversion;
         }
@@ -48,7 +48,6 @@ public class Action01_Jump : MonoBehaviour {
 
     void Update()
     {
-
         //Set Animator Parameters
         CharacterAnimator.SetInteger("Action", 1);
         CharacterAnimator.SetFloat("YSpeed", Player.rigidbody.velocity.y);
@@ -59,12 +58,14 @@ public class Action01_Jump : MonoBehaviour {
         //Set Animation Angle
         Vector3 VelocityMod = new Vector3(Player.rigidbody.velocity.x, 0, Player.rigidbody.velocity.z);
         Quaternion CharRot = Quaternion.LookRotation(VelocityMod, transform.up);
-        CharacterAnimator.transform.rotation = Quaternion.Lerp(CharacterAnimator.transform.rotation, CharRot, Time.deltaTime * skinRotationSpeed);
+        CharacterAnimator.transform.rotation = Quaternion.Lerp(CharacterAnimator.transform.rotation, CharRot,
+            Time.deltaTime * skinRotationSpeed);
 
         Actions.Action02.HomingAvailable = true;
 
         //Do a homing attack
-        if (Counter > 0.08f && Input.GetButtonDown("A") && Actions.Action02Control.HasTarget && Actions.Action02.HomingAvailable)
+        if (Counter > 0.08f && Input.GetButtonDown("A") && Actions.Action02Control.HasTarget &&
+            Actions.Action02.HomingAvailable)
         {
             if (Actions.Action02Control.HomingAvailable)
             {
@@ -75,7 +76,8 @@ public class Action01_Jump : MonoBehaviour {
             }
         }
         //If no tgt, do air dash;
-        if (Counter > 0.08f && Input.GetButtonDown("A") && !Actions.Action02Control.HasTarget && Actions.Action02.HomingAvailable)
+        if (Counter > 0.08f && Input.GetButtonDown("A") && !Actions.Action02Control.HasTarget &&
+            Actions.Action02.HomingAvailable)
         {
             if (Actions.Action02Control.HomingAvailable)
             {
@@ -85,15 +87,14 @@ public class Action01_Jump : MonoBehaviour {
                 Actions.Action02.InitialEvents();
             }
         }
-
     }
 
-    void FixedUpdate () {
-
+    void FixedUpdate()
+    {
         //Jump action
         Counter += Time.deltaTime;
 
-        if(!Input.GetButton("A") && Counter < JumpDuration)
+        if (!Input.GetButton("A") && Counter < JumpDuration)
         {
             Counter = JumpDuration;
         }
@@ -108,13 +109,13 @@ public class Action01_Jump : MonoBehaviour {
         if (Counter < JumpDuration)
         {
             Player.isRolling = false;
-            if(Counter < SlopedJumpDuration)
+            if (Counter < SlopedJumpDuration)
             {
                 Player.AddVelocity(InitialNormal * (JumpSpeed));
             }
             else
             {
-                Player.AddVelocity(new Vector3(0,1,0) * (JumpSpeed));
+                Player.AddVelocity(new Vector3(0, 1, 0) * (JumpSpeed));
             }
             //Extra speed
             Player.AddVelocity(new Vector3(0, 1, 0) * (jumpSlopeSpeed));
@@ -123,7 +124,8 @@ public class Action01_Jump : MonoBehaviour {
         //Cancell Jump
         if (Player.rigidbody.velocity.y > 0 && !Input.GetButton("A"))
         {
-            Vector3 Velocity = new Vector3(Player.rigidbody.velocity.x, Player.rigidbody.velocity.y, Player.rigidbody.velocity.z);
+            Vector3 Velocity = new Vector3(Player.rigidbody.velocity.x, Player.rigidbody.velocity.y,
+                Player.rigidbody.velocity.z);
             Velocity.y = Velocity.y - StopYSpeedOnRelease;
             Player.rigidbody.velocity = Velocity;
         }
@@ -134,6 +136,5 @@ public class Action01_Jump : MonoBehaviour {
         {
             Actions.ChangeAction(0);
         }
-
     }
 }

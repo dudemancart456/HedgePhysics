@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Action02_Homing : MonoBehaviour {
-
+public class Action02_Homing : MonoBehaviour
+{
     public ActionManager Action;
     public Animator CharacterAnimator;
     PlayerBhysics Player;
@@ -52,7 +52,7 @@ public class Action02_Homing : MonoBehaviour {
                 Speed = XZmag;
             }
 
-            if(XZmag < AirDashSpeed)
+            if (XZmag < AirDashSpeed)
             {
                 Aspeed = AirDashSpeed;
             }
@@ -74,14 +74,15 @@ public class Action02_Homing : MonoBehaviour {
             TgyXY.y = 0;
             float facingAmmount = Vector3.Dot(Player.PreviousRawInput.normalized, TgyXY);
             //Debug.Log(facingAmmount);
-            if (facingAmmount < FacingAmmount) { IsAirDash = true; }
+            if (facingAmmount < FacingAmmount)
+            {
+                IsAirDash = true;
+            }
         }
-
     }
 
     void Update()
     {
-
         //Set Animator Parameters
         CharacterAnimator.SetInteger("Action", 1);
         CharacterAnimator.SetFloat("YSpeed", Player.rigidbody.velocity.y);
@@ -91,8 +92,8 @@ public class Action02_Homing : MonoBehaviour {
         //Set Animation Angle
         Vector3 VelocityMod = new Vector3(Player.rigidbody.velocity.x, 0, Player.rigidbody.velocity.z);
         Quaternion CharRot = Quaternion.LookRotation(VelocityMod, transform.up);
-        CharacterAnimator.transform.rotation = Quaternion.Lerp(CharacterAnimator.transform.rotation, CharRot, Time.deltaTime * skinRotationSpeed);
-
+        CharacterAnimator.transform.rotation = Quaternion.Lerp(CharacterAnimator.transform.rotation, CharRot,
+            Time.deltaTime * skinRotationSpeed);
     }
 
     void FixedUpdate()
@@ -126,13 +127,10 @@ public class Action02_Homing : MonoBehaviour {
             Action.ChangeAction(0);
         }
     }
-    
+
     public void ResetHomingVariables()
     {
         Timer = 0;
         //IsAirDash = false;
     }
-
-
-
 }

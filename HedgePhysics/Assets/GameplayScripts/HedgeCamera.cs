@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HedgeCamera : MonoBehaviour {
-
+public class HedgeCamera : MonoBehaviour
+{
     public Transform Target;
     public PlayerBhysics Player;
     public Transform Skin;
@@ -76,8 +76,7 @@ public class HedgeCamera : MonoBehaviour {
     float lookAtCount = 0;
     Vector3 lookAtDir;
 
-    [Header("ShakeEffects")]
-    public static float Shakeforce;
+    [Header("ShakeEffects")] public static float Shakeforce;
     public float ShakeDampen;
 
     public float InvertedX { get; set; }
@@ -95,15 +94,14 @@ public class HedgeCamera : MonoBehaviour {
         InitialRotationSpeed = rotSpeed;
     }
 
-    void LateUpdate () {
-
+    void LateUpdate()
+    {
         CameraMovement();
         CameraRotation();
         CameraCollision();
         CamereApplyEffects();
         CameraSet();
         CameraHighSpeedLock();
-
     }
 
     void CameraMovement()
@@ -122,24 +120,27 @@ public class HedgeCamera : MonoBehaviour {
             {
                 PlayerPosLerped.position = Target.position;
                 Quaternion newrot = Player.transform.rotation;
-                PlayerPosLerped.rotation = Quaternion.Lerp(PlayerPosLerped.rotation, newrot, Time.deltaTime * CameraVerticalRotationSpeed);
+                PlayerPosLerped.rotation = Quaternion.Lerp(PlayerPosLerped.rotation, newrot,
+                    Time.deltaTime * CameraVerticalRotationSpeed);
             }
             else
             {
                 PlayerPosLerped.position = Target.position;
                 Quaternion newrot = Player.transform.rotation;
                 newrot.eulerAngles = new Vector3(0, newrot.eulerAngles.y, 0);
-                PlayerPosLerped.rotation = Quaternion.Lerp(PlayerPosLerped.rotation, newrot, Time.deltaTime * CameraVerticalRotationSpeed);
+                PlayerPosLerped.rotation = Quaternion.Lerp(PlayerPosLerped.rotation, newrot,
+                    Time.deltaTime * CameraVerticalRotationSpeed);
             }
 
-            x += (Input.GetAxis("Horizontal_right") * ((InputXSpeed) * SensiX)* InvertedX) * Time.deltaTime;
+            x += (Input.GetAxis("Horizontal_right") * ((InputXSpeed) * SensiX) * InvertedX) * Time.deltaTime;
             y -= (Input.GetAxis("Vertical_right") * ((InputYSpeed) * SensiY) * InvertedY) * Time.deltaTime;
             x += (Input.GetAxis("Mouse X") * ((InputXSpeed) * SensiX) * InvertedX) * Time.deltaTime;
             y -= (Input.GetAxis("Mouse Y") * ((InputYSpeed) * SensiY) * InvertedY) * Time.deltaTime;
         }
         else
         {
-            PlayerPosLerped.rotation = Quaternion.Lerp(PlayerPosLerped.rotation, Quaternion.LookRotation(Vector3.forward), Time.deltaTime * CameraVerticalRotationSpeed);
+            PlayerPosLerped.rotation = Quaternion.Lerp(PlayerPosLerped.rotation,
+                Quaternion.LookRotation(Vector3.forward), Time.deltaTime * CameraVerticalRotationSpeed);
             RotateDirection(lookdir, Mathf.RoundToInt(LockedRotationSpeed), heighttolook);
         }
         z = 0;
@@ -149,7 +150,6 @@ public class HedgeCamera : MonoBehaviour {
     {
         if (UseAutoRotation && !Locked)
         {
-
             if (!UseCurve)
             {
                 float NormalMod = Mathf.Abs(Player.b_normalSpeed - Player.MaxSpeed);
@@ -160,14 +160,15 @@ public class HedgeCamera : MonoBehaviour {
             }
             else
             {
-                CurveX = AutoXRotationCurve.Evaluate((Player.rigidbody.velocity.sqrMagnitude / Player.MaxSpeed) / Player.MaxSpeed);
+                CurveX =
+                    AutoXRotationCurve.Evaluate((Player.rigidbody.velocity.sqrMagnitude / Player.MaxSpeed) /
+                                                Player.MaxSpeed);
                 CurveX = CurveX * 100;
                 x += (((Input.GetAxis("Horizontal")) * CurveX) * AutoXRotationSpeed) * Time.deltaTime;
                 ;
                 y -= 0;
                 z = 0;
             }
-
         }
 
         y = ClampAngle(y, yMinLimit, yMaxLimit);
@@ -205,7 +206,7 @@ public class HedgeCamera : MonoBehaviour {
     void CamereApplyEffects()
     {
         lookTimer += Time.deltaTime;
-        if(lookTimer < 0)
+        if (lookTimer < 0)
         {
             LookAt(lookAtDir);
         }
@@ -220,13 +221,13 @@ public class HedgeCamera : MonoBehaviour {
     {
         if (LockHeight && Player.Grounded)
         {
-            FollowDirection(HeightToLock,LockHeightSpeed);
+            FollowDirection(HeightToLock, LockHeightSpeed);
         }
 
         float y = Player.rigidbody.velocity.y;
-        if (MoveHeightBasedOnSpeed && !Player.Grounded && y < FallSpeedThreshold )
+        if (MoveHeightBasedOnSpeed && !Player.Grounded && y < FallSpeedThreshold)
         {
-            FollowDirection(-y,HeightFollowSpeed);
+            FollowDirection(-y, HeightFollowSpeed);
         }
         else if (y > FallSpeedThreshold && !Player.Grounded)
         {
@@ -257,31 +258,28 @@ public class HedgeCamera : MonoBehaviour {
     {
         if (Player.XZmag > LockCamAtHighSpeed && (lookTimer > 0))
         {
-            FollowDirection(3, 14, -10,0);
+            FollowDirection(3, 14, -10, 0);
         }
     }
 
     public void RotateDirection(Vector3 dir, int speed, float height)
     {
-
         float dot = Vector3.Dot(dir, transform.right);
         x += (dot * speed) * (Time.deltaTime * 100);
         y = Mathf.Lerp(y, height, Time.deltaTime * 5);
-
     }
 
     public void FollowDirection(float speed, float height, float distance, float Yspeed)
     {
         if (!Locked)
         {
-
             float dot = Vector3.Dot(Skin.forward, transform.right);
             x += (dot * speed) * (Time.deltaTime * 100);
 
             y = Mathf.Lerp(y, height, Time.deltaTime * Yspeed);
-
         }
     }
+
     public void FollowDirection(float height, float speed)
     {
         if (!Locked)
@@ -302,49 +300,42 @@ public class HedgeCamera : MonoBehaviour {
 
     //Set camera and overloads (function with the same name are different options)
 
-    public void SetCamera(Vector3 dir, float duration, float heightSet )
+    public void SetCamera(Vector3 dir, float duration, float heightSet)
     {
-
         lookAtDir = dir;
         lookTimer = -duration;
         heighttolook = heightSet;
         LockedRotationSpeed = InitialLockedRotationSpeed * 0.006f;
-
     }
+
     public void SetCamera(Vector3 dir, float duration, float heightSet, float speed)
     {
-
         lookAtDir = dir;
         lookTimer = -duration;
         heighttolook = heightSet;
         LockedRotationSpeed = speed;
-
     }
+
     public void SetCamera(Vector3 dir, float duration, float heightSet, float speed, float lagSet)
     {
-
         lookAtDir = dir;
         lookTimer = -duration;
         heighttolook = heightSet;
         LockedRotationSpeed = speed;
         moveSpeed = lagSet;
         rotSpeed = lagSet * 0.1f;
-
     }
+
     public void SetCamera(Vector3 dir, float duration)
     {
-
         lookAtDir = dir;
         lookTimer = -duration;
         LockedRotationSpeed = InitialLockedRotationSpeed;
-
     }
+
     public void SetCamera(float lagSet)
     {
-
         moveSpeed = lagSet;
         rotSpeed = lagSet * 0.1f;
-
     }
-
 }

@@ -1,21 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MotobugControl : MonoBehaviour {
-
+public class MotobugControl : MonoBehaviour
+{
     EnemyBhysics Physics;
     public Animator Anim;
     public ParticleSystem DustParticles;
 
     public int Action { get; set; }
     Transform Player;
-    
+
     public Vector3 Target { get; set; }
     Vector3 InitialPosition;
 
-    [Header("Wander Variables")]
-
-    public float WanderDistance;
+    [Header("Wander Variables")] public float WanderDistance;
     public float WanterStillAmmount;
     public float WanderMoveAmmount;
     public float WanderCalmness;
@@ -23,27 +21,22 @@ public class MotobugControl : MonoBehaviour {
     float RandomTime;
     float distanceToPlayer;
 
-    [Header("Attack Variables")]
-
-    public float PlayerNoticeDistance;
+    [Header("Attack Variables")] public float PlayerNoticeDistance;
     public float PlayerLoseDistance;
     public float NoticeReactionTime;
     public float skinRotationSpeed;
 
-    void Awake () {
-
+    void Awake()
+    {
         Player = GameObject.FindGameObjectWithTag("Player").transform;
         Physics = GetComponent<EnemyBhysics>();
         InitialPosition = transform.position;
         //Physics.rigidbody.velocity = Vector3.zero;
         Target = InitialPosition;
-
     }
-	
-	void FixedUpdate () {
 
-
-
+    void FixedUpdate()
+    {
         switch (Action)
         {
             case 0:
@@ -57,9 +50,8 @@ public class MotobugControl : MonoBehaviour {
                 break;
             default:
                 break;
-
         }
-	}
+    }
 
     void Action_00_Wander()
     {
@@ -74,7 +66,8 @@ public class MotobugControl : MonoBehaviour {
             Physics.HandleGroundControl(1, dir.normalized);
             dir.y = 0;
             Quaternion CharRot = Quaternion.LookRotation(dir, transform.up);
-            Anim.transform.rotation = Quaternion.Lerp(Anim.transform.rotation, CharRot, Time.deltaTime * skinRotationSpeed);
+            Anim.transform.rotation = Quaternion.Lerp(Anim.transform.rotation, CharRot,
+                Time.deltaTime * skinRotationSpeed);
         }
         if (MoveTime > WanderMoveAmmount)
         {
@@ -84,7 +77,8 @@ public class MotobugControl : MonoBehaviour {
         //ChangeTgt
         if (RandomTime > WanderCalmness)
         {
-            Vector3 wander = new Vector3(Random.Range(-WanderDistance, WanderDistance), transform.position.y, Random.Range(-WanderDistance, WanderDistance));
+            Vector3 wander = new Vector3(Random.Range(-WanderDistance, WanderDistance), transform.position.y,
+                Random.Range(-WanderDistance, WanderDistance));
             wander = Vector3.ClampMagnitude(wander, WanderDistance);
             Target = InitialPosition + wander;
             RandomTime = 0;

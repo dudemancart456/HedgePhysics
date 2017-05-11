@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MovingRing : MonoBehaviour {
-
+public class MovingRing : MonoBehaviour
+{
     public float CollectTime;
     float coutner;
     public bool colectable { get; set; }
@@ -15,28 +15,27 @@ public class MovingRing : MonoBehaviour {
         colectable = false;
     }
 
-	void Update () {
-
+    void Update()
+    {
         coutner += Time.deltaTime;
-        if(coutner > CollectTime)
+        if (coutner > CollectTime)
         {
             colectable = true;
         }
-        if(coutner > Duration - 2)
+        if (coutner > Duration - 2)
         {
             RingFlicker();
         }
-        if(coutner > Duration)
+        if (coutner > Duration)
         {
             Destroy(gameObject);
         }
-
-	}
+    }
 
     public void RingFlicker()
     {
         flickCount += Time.deltaTime * 180;
-        if(flickCount < 0)
+        if (flickCount < 0)
         {
             gameObject.GetComponent<MeshRenderer>().enabled = false;
         }
@@ -49,5 +48,4 @@ public class MovingRing : MonoBehaviour {
             flickCount = -10;
         }
     }
-
 }

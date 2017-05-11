@@ -2,8 +2,8 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class SceneController : MonoBehaviour {
-
+public class SceneController : MonoBehaviour
+{
     static SceneController Instance;
     public Scene Gameplay;
     public static int LevelToLoad;
@@ -25,12 +25,10 @@ public class SceneController : MonoBehaviour {
         LoadGameplay();
         Player = GameObject.FindWithTag("Player").GetComponent<PlayerBhysics>();
         Player.gameObject.SetActive(false);
-
     }
 
     void Update()
     {
-        
     }
 
     public static void LoadStageLoading(int StageValue)
@@ -50,7 +48,4 @@ public class SceneController : MonoBehaviour {
         SceneManager.LoadSceneAsync(stage, LoadSceneMode.Additive);
         LastLoadedLevel = stage;
     }
-
-
-
 }

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SkinPosition : MonoBehaviour {
-
+public class SkinPosition : MonoBehaviour
+{
     SetPosition setPosScript;
     public PlayerBhysics Player;
 
@@ -11,9 +11,8 @@ public class SkinPosition : MonoBehaviour {
         setPosScript.GetComponent<SetPosition>();
     }
 
-	void Update () {
-
+    void Update()
+    {
         setPosScript.UseDynamicOffset(Player.transform.up);
-
-	}
+    }
 }

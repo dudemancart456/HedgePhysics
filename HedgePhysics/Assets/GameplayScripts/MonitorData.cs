@@ -3,11 +3,12 @@ using System.Collections;
 
 public enum MonitorType
 {
-    Ring, Shield
+    Ring,
+    Shield
 }
 
-public class MonitorData : MonoBehaviour {
-
+public class MonitorData : MonoBehaviour
+{
     public MonitorType Type;
     public int RingAmmount;
 
@@ -18,5 +19,4 @@ public class MonitorData : MonoBehaviour {
         GameObject.Instantiate(MonitorExplosion, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
-
 }

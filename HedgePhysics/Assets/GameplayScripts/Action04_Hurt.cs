@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Action04_Hurt : MonoBehaviour {
-
+public class Action04_Hurt : MonoBehaviour
+{
     public Animator CharacterAnimator;
     PlayerBhysics Player;
     ActionManager Actions;
@@ -26,7 +26,8 @@ public class Action04_Hurt : MonoBehaviour {
         //Change Velocity
         if (!ResetSpeedOnHit)
         {
-            Vector3 newSpeed = new Vector3((Player.rigidbody.velocity.x / 2), KnockbackUpwardsForce, (Player.rigidbody.velocity.z / 2));
+            Vector3 newSpeed = new Vector3((Player.rigidbody.velocity.x / 2), KnockbackUpwardsForce,
+                (Player.rigidbody.velocity.z / 2));
             newSpeed.y = KnockbackUpwardsForce;
             Player.rigidbody.velocity = newSpeed;
         }
@@ -36,29 +37,26 @@ public class Action04_Hurt : MonoBehaviour {
             newSpeed.y = KnockbackUpwardsForce;
             Player.rigidbody.velocity = newSpeed;
         }
-
     }
 
-    void FixedUpdate () {
-
+    void FixedUpdate()
+    {
         //Get out of Action
         counter += 1;
 
         if (Player.Grounded && counter > 20)
         {
             if (!Actions.Action04Control.isDead)
-            { 
+            {
                 Actions.ChangeAction(0);
                 Debug.Log("What");
                 counter = 0;
             }
         }
-
     }
 
     void Update()
     {
-
         //Set Animator Parameters
         CharacterAnimator.SetInteger("Action", 4);
 
@@ -71,6 +69,5 @@ public class Action04_Hurt : MonoBehaviour {
                 CharacterAnimator.SetBool("Dead", true);
             }
         }
-
     }
 }

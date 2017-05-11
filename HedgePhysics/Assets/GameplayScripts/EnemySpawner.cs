@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemySpawner : MonoBehaviour {
-
+public class EnemySpawner : MonoBehaviour
+{
     public float Distance;
     Transform Player;
     public GameObject TeleportSparkle;
@@ -17,7 +17,7 @@ public class EnemySpawner : MonoBehaviour {
 
     void LateUpdate()
     {
-        if(Vector3.Distance(Player.position,transform.position) < Distance)
+        if (Vector3.Distance(Player.position, transform.position) < Distance)
         {
             SpawnInNormal();
         }
@@ -30,5 +30,4 @@ public class EnemySpawner : MonoBehaviour {
         HomingAttackControl.UpdateHomingTargets();
         Destroy(gameObject);
     }
-
 }

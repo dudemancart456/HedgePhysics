@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Action03_SpinDash : MonoBehaviour {
-
+public class Action03_SpinDash : MonoBehaviour
+{
     public Animator CharacterAnimator;
     public Animator BallAnimator;
     CameraControl Cam;
@@ -17,7 +17,7 @@ public class Action03_SpinDash : MonoBehaviour {
     public SkinnedMeshRenderer[] PlayerSkin;
     public SkinnedMeshRenderer SpinDashBall;
     public Transform PlayerSkinTransform;
-    
+
 
     public float SpinDashChargingSpeed = 0.3f;
     public float MinimunCharge = 10;
@@ -42,13 +42,13 @@ public class Action03_SpinDash : MonoBehaviour {
         sounds.SpinDashSound();
         charge = 0;
     }
-	
-	void FixedUpdate ()
+
+    void FixedUpdate()
     {
         charge += SpinDashChargingSpeed;
 
         //Lock camera on behind
-        Cam.Cam.FollowDirection(3, 14f, -10,0);
+        Cam.Cam.FollowDirection(3, 14f, -10, 0);
 
         if (Player.RawInput.sqrMagnitude > 0.9f)
         {
@@ -66,7 +66,10 @@ public class Action03_SpinDash : MonoBehaviour {
 
         Player.rigidbody.velocity /= SpinDashStillForce;
 
-        if(!Input.GetButton("B")) { Release(); }
+        if (!Input.GetButton("B"))
+        {
+            Release();
+        }
 
         if (charge > MaximunCharge)
         {
@@ -74,12 +77,15 @@ public class Action03_SpinDash : MonoBehaviour {
         }
 
         //Stop if not grounded
-        if (!Player.Grounded) { Actions.ChangeAction(0); }
+        if (!Player.Grounded)
+        {
+            Actions.ChangeAction(0);
+        }
     }
 
     void Release()
     {
-        HedgeCamera.Shakeforce = (ReleaseShakeAmmount * charge)/100;
+        HedgeCamera.Shakeforce = (ReleaseShakeAmmount * charge) / 100;
         if (charge < MinimunCharge)
         {
             sounds.Source2.Stop();
@@ -92,7 +98,6 @@ public class Action03_SpinDash : MonoBehaviour {
             Player.rigidbody.velocity = charge * (RawPrevInput);
             Actions.ChangeAction(0);
         }
-
     }
 
     void Update()
@@ -120,7 +125,8 @@ public class Action03_SpinDash : MonoBehaviour {
         {
             CharRot = Quaternion.LookRotation(Player.rigidbody.velocity, Player.GroundNormal);
         }
-        CharacterAnimator.transform.rotation = Quaternion.Lerp(CharacterAnimator.transform.rotation, CharRot, Time.deltaTime * Actions.Action00.skinRotationSpeed);
+        CharacterAnimator.transform.rotation = Quaternion.Lerp(CharacterAnimator.transform.rotation, CharRot,
+            Time.deltaTime * Actions.Action00.skinRotationSpeed);
 
 
         for (int i = 0; i < PlayerSkin.Length; i++)

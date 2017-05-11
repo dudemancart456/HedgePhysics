@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerBhysics : MonoBehaviour {
-
-    [Header("Movement Values")]
-
-    public float MoveAccell = 0.5f;
+public class PlayerBhysics : MonoBehaviour
+{
+    [Header("Movement Values")] public float MoveAccell = 0.5f;
     public AnimationCurve AccellOverSpeed;
     public float AccellShiftOverSpeed;
     public float MoveDecell = 1.3f;
@@ -30,8 +28,7 @@ public class PlayerBhysics : MonoBehaviour {
     public float SlopePowerShiftSpeed;
     public float LandingConversionFactor = 2;
 
-    [Header("AirMovementExtras")]
-    public float AirControlAmmount = 2;
+    [Header("AirMovementExtras")] public float AirControlAmmount = 2;
     public float AirSkiddingForce = 10;
     public bool StopAirMovementIfNoInput = false;
 
@@ -45,9 +42,7 @@ public class PlayerBhysics : MonoBehaviour {
     public Vector3 Gravity;
     public Vector3 MoveInput { get; set; }
 
-    [Header("Other Values")]
-
-    public float GroundOffset;
+    [Header("Other Values")] public float GroundOffset;
     RaycastHit hit;
     public Transform CollisionPoint;
     public Collider CollisionSphere;
@@ -61,9 +56,7 @@ public class PlayerBhysics : MonoBehaviour {
     public DebugUI Debui;
 
 
-    [Header("Rolling Values")]
-
-    public float RollingLandingBoost;
+    [Header("Rolling Values")] public float RollingLandingBoost;
     public float RollingDownhillBoost;
     public float RollingUphillBoost;
     public float RollingStartSpeed;
@@ -80,9 +73,7 @@ public class PlayerBhysics : MonoBehaviour {
     public Vector3 b_tangentVelocity { get; set; }
 
     //Etc
-    [Header("Etc Values")]
-
-    public bool UseSphereToGetNormal;
+    [Header("Etc Values")] public bool UseSphereToGetNormal;
 
     Vector3 KeepNormal;
     float KeepNormalCounter;
@@ -102,9 +93,7 @@ public class PlayerBhysics : MonoBehaviour {
 
     void FixedUpdate()
     {
-
         GeneralPhysics();
-
     }
 
     void Update()
@@ -144,9 +133,15 @@ public class PlayerBhysics : MonoBehaviour {
         }
 
         //Set Curve thingies
-        curvePosAcell = Mathf.Lerp(curvePosAcell, AccellOverSpeed.Evaluate((rigidbody.velocity.sqrMagnitude / MaxSpeed) / MaxSpeed), Time.fixedDeltaTime * AccellShiftOverSpeed);
-        curvePosTang = Mathf.Lerp(curvePosTang, TangDragOverSpeed.Evaluate((rigidbody.velocity.sqrMagnitude / MaxSpeed) / MaxSpeed), Time.fixedDeltaTime * TangentialDragShiftSpeed);
-        curvePosSlope = Mathf.Lerp(curvePosSlope, SlopePowerOverSpeed.Evaluate((rigidbody.velocity.sqrMagnitude / MaxSpeed) / MaxSpeed), Time.fixedDeltaTime * SlopePowerShiftSpeed);
+        curvePosAcell = Mathf.Lerp(curvePosAcell,
+            AccellOverSpeed.Evaluate((rigidbody.velocity.sqrMagnitude / MaxSpeed) / MaxSpeed),
+            Time.fixedDeltaTime * AccellShiftOverSpeed);
+        curvePosTang = Mathf.Lerp(curvePosTang,
+            TangDragOverSpeed.Evaluate((rigidbody.velocity.sqrMagnitude / MaxSpeed) / MaxSpeed),
+            Time.fixedDeltaTime * TangentialDragShiftSpeed);
+        curvePosSlope = Mathf.Lerp(curvePosSlope,
+            SlopePowerOverSpeed.Evaluate((rigidbody.velocity.sqrMagnitude / MaxSpeed) / MaxSpeed),
+            Time.fixedDeltaTime * SlopePowerShiftSpeed);
 
         // Apply Max Speed Limit
         XZmag = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z).magnitude;
@@ -229,7 +224,6 @@ public class PlayerBhysics : MonoBehaviour {
                 //Debug.Log("Rots");
             }
         }
-
     }
 
     void HandleGroundControl(float deltaTime, Vector3 input)
@@ -288,7 +282,6 @@ public class PlayerBhysics : MonoBehaviour {
                     // (Reverse the inpit of inputdirection (on x and z, here)
                     normalVelocity = inputDirection * normalSpeed;
                 }
-
             }
 
             // Additionally, we can apply some drag on the tangent directions for
@@ -304,8 +297,8 @@ public class PlayerBhysics : MonoBehaviour {
             else
             {
                 tangentVelocity = Vector3.MoveTowards(tangentVelocity, Vector3.zero,
-                    ((TangentialDrag * RollingTurningDecreace) * TangDragOverSpeed.Evaluate(curvePosTang)) * deltaTime * inputMagnitude);
-
+                    ((TangentialDrag * RollingTurningDecreace) * TangDragOverSpeed.Evaluate(curvePosTang)) * deltaTime *
+                    inputMagnitude);
             }
 
 
@@ -333,14 +326,13 @@ public class PlayerBhysics : MonoBehaviour {
             Debui.normalSpeed = normalSpeed;
             Debui.normalVelocity = normalVelocity;
             Debui.tangentVelocity = tangentVelocity;
-
         }
     }
 
     void GroundMovement()
     {
         //Stop Rolling
-        if(rigidbody.velocity.sqrMagnitude < 20)
+        if (rigidbody.velocity.sqrMagnitude < 20)
         {
             isRolling = false;
         }
@@ -349,8 +341,8 @@ public class PlayerBhysics : MonoBehaviour {
         SlopePlysics();
 
         // Call Ground Control
-        HandleGroundControl(1 , MoveInput * curvePosAcell);
-        
+        HandleGroundControl(1, MoveInput * curvePosAcell);
+
         //Reduce speed
         if (MoveInput == Vector3.zero)
         {
@@ -359,13 +351,12 @@ public class PlayerBhysics : MonoBehaviour {
 
         //Set magnitude reference variable
         SpeedMagnitude = rigidbody.velocity.magnitude;
-
     }
 
     void SlopePlysics()
     {
         //ApplyLandingSpeed
-        if(WasOnAir && Grounded)
+        if (WasOnAir && Grounded)
         {
             Vector3 Addsped;
 
@@ -399,7 +390,7 @@ public class PlayerBhysics : MonoBehaviour {
         }
 
         //Apply slope power
-        if(Grounded && GroundNormal.y < SlopeStandingLimit)
+        if (Grounded && GroundNormal.y < SlopeStandingLimit)
         {
             if (rigidbody.velocity.y > StartDownhillMultiplier)
             {
@@ -410,7 +401,8 @@ public class PlayerBhysics : MonoBehaviour {
                 }
                 else
                 {
-                    Vector3 force = new Vector3(0, (SlopePower * curvePosSlope) * UphillMultiplier, 0) * RollingUphillBoost;
+                    Vector3 force = new Vector3(0, (SlopePower * curvePosSlope) * UphillMultiplier, 0) *
+                                    RollingUphillBoost;
                     AddVelocity(force);
                 }
             }
@@ -425,10 +417,10 @@ public class PlayerBhysics : MonoBehaviour {
                     }
                     else
                     {
-                        Vector3 force = new Vector3(0, (SlopePower * curvePosSlope) * DownhillMultiplier, 0) * RollingDownhillBoost;
+                        Vector3 force = new Vector3(0, (SlopePower * curvePosSlope) * DownhillMultiplier, 0) *
+                                        RollingDownhillBoost;
                         AddVelocity(force);
                     }
-
                 }
                 else
                 {
@@ -437,18 +429,17 @@ public class PlayerBhysics : MonoBehaviour {
                 }
             }
         }
-
     }
 
     public void StickToGround(float StickingPower)
     {
         CollisionPoint.LookAt(transform.position);
-        if (Physics.Raycast(CollisionPoint.position, -Colliders.up, out hit, GroundStickingDistance) && !Input.GetButton("A"))
+        if (Physics.Raycast(CollisionPoint.position, -Colliders.up, out hit, GroundStickingDistance) &&
+            !Input.GetButton("A"))
         {
             Vector3 force = hit.normal * StickingPower;
             AddVelocity(force);
         }
-
     }
 
     public void AddVelocity(Vector3 force)
@@ -459,7 +450,7 @@ public class PlayerBhysics : MonoBehaviour {
     void AirMovement()
     {
         //AddSpeed
-        HandleGroundControl(AirControlAmmount , MoveInput);
+        HandleGroundControl(AirControlAmmount, MoveInput);
 
         //Get out of roll
         isRolling = false;
@@ -482,15 +473,14 @@ public class PlayerBhysics : MonoBehaviour {
         //Air Skidding  
         if (b_normalSpeed < 0 && !Grounded)
         {
-            HandleGroundControl(1,(MoveInput * AirSkiddingForce) * MoveAccell);
+            HandleGroundControl(1, (MoveInput * AirSkiddingForce) * MoveAccell);
         }
 
         //Max Falling Speed
         if (rigidbody.velocity.y < MaxFallingSpeed)
         {
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x, MaxFallingSpeed,rigidbody.velocity.z);
+            rigidbody.velocity = new Vector3(rigidbody.velocity.x, MaxFallingSpeed, rigidbody.velocity.z);
         }
-
     }
 
     private void OnDrawGizmosSelected()
@@ -518,12 +508,10 @@ public class PlayerBhysics : MonoBehaviour {
             pointSum = pointSum / col.contacts.Length;
             CollisionPointsNormal = normalSum / col.contacts.Length;
 
-            if(rigidbody.velocity.normalized != Vector3.zero)
+            if (rigidbody.velocity.normalized != Vector3.zero)
             {
                 CollisionPoint.position = pointSum;
             }
-
         }
     }
-
 }

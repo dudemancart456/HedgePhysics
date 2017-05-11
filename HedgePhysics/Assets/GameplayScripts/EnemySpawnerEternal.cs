@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemySpawnerEternal : MonoBehaviour {
-
+public class EnemySpawnerEternal : MonoBehaviour
+{
     public float Distance;
     Transform Player;
 
@@ -41,7 +41,7 @@ public class EnemySpawnerEternal : MonoBehaviour {
     {
         HasSpawned = true;
         Instantiate(TeleportSparkle, transform.position, transform.rotation);
-        GameObject em = (GameObject)Instantiate(Enemy, transform.position, transform.rotation);
+        GameObject em = (GameObject) Instantiate(Enemy, transform.position, transform.rotation);
         em.GetComponent<EnemyHealth>().SpawnReference = this;
         HomingAttackControl.UpdateHomingTargets();
     }

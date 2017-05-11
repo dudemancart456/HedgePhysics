@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MovingPlatformControl : MonoBehaviour {
-
+public class MovingPlatformControl : MonoBehaviour
+{
     public float HorizontalXDistance;
     public float HorizontalXSpeed;
     public float HorizontalZDistance;
@@ -25,14 +25,17 @@ public class MovingPlatformControl : MonoBehaviour {
         InitialPosition = transform.position;
     }
 
-    void FixedUpdate () {
-
+    void FixedUpdate()
+    {
         float hx1 = Moving.x;
         float hz1 = Moving.z;
         float v1 = Moving.y;
 
         //rigidbody.MovePosition(InitialPosition + new Vector3(Mathf.Sin(Time.time * HorizontalSpeed) * HorizontalDistance, Mathf.Sin(Time.time * VerticalSpeed) * VerticalDistance, 0.0f));
-        Moving = (InitialPosition + new Vector3(Mathf.Sin(Time.time * HorizontalXSpeed) * HorizontalXDistance, Mathf.Sin(Time.time * VerticalSpeed) * VerticalDistance, Mathf.Sin(Time.time * HorizontalZSpeed) * HorizontalZDistance));
+        Moving = (InitialPosition +
+                  new Vector3(Mathf.Sin(Time.time * HorizontalXSpeed) * HorizontalXDistance,
+                      Mathf.Sin(Time.time * VerticalSpeed) * VerticalDistance,
+                      Mathf.Sin(Time.time * HorizontalZSpeed) * HorizontalZDistance));
         transform.position = Moving;
 
         float hx2 = Moving.x;

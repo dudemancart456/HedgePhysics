@@ -11,7 +11,16 @@ public class CameraFacing : MonoBehaviour
 {
     Camera referenceCamera;
 
-    public enum Axis { up, down, left, right, forward, back };
+    public enum Axis
+    {
+        up,
+        down,
+        left,
+        right,
+        forward,
+        back
+    };
+
     public bool reverseFace = false;
     public Axis axis = Axis.up;
 
@@ -46,7 +55,8 @@ public class CameraFacing : MonoBehaviour
     void Update()
     {
         // rotates the object relative to the camera
-        Vector3 targetPos = transform.position + referenceCamera.transform.rotation * (reverseFace ? Vector3.forward : Vector3.back);
+        Vector3 targetPos = transform.position +
+                            referenceCamera.transform.rotation * (reverseFace ? Vector3.forward : Vector3.back);
         Vector3 targetOrientation = referenceCamera.transform.rotation * GetAxis(axis);
         transform.LookAt(targetPos, targetOrientation);
     }

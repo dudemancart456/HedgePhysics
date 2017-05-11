@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Rail_Interaction : MonoBehaviour {
-
+public class Rail_Interaction : MonoBehaviour
+{
     public Rail rail { get; set; }
     PlayerBhysics Player;
     ActionManager Actions;
@@ -26,7 +26,7 @@ public class Rail_Interaction : MonoBehaviour {
 
         if (rail != null)
         {
-            OnRail(Player.SpeedMagnitude/100);
+            OnRail(Player.SpeedMagnitude / 100);
             for (float i = 0; i < Player.SpeedMagnitude; i++)
             {
                 //OnRail(Player.SpeedMagnitude/100);
@@ -36,11 +36,10 @@ public class Rail_Interaction : MonoBehaviour {
             Player.rigidbody.velocity = resety;
 
             //Get Out of rail
-            if(Actions.Action == 1)
+            if (Actions.Action == 1)
             {
                 rail = null;
             }
-
         }
     }
 
@@ -61,7 +60,7 @@ public class Rail_Interaction : MonoBehaviour {
     {
         //Get out when over
 
-        if (currentSeg >= (rail.RailArray.Length -1))
+        if (currentSeg >= (rail.RailArray.Length - 1))
         {
             rail = null;
             return;
@@ -75,32 +74,32 @@ public class Rail_Interaction : MonoBehaviour {
 
         transition += speed;
 
-        if(transition > 1)
+        if (transition > 1)
         {
             transition = 0;
             currentSeg++;
         }
-        else if(transition < 0)
+        else if (transition < 0)
         {
             transition = 1;
             currentSeg--;
         }
 
         transform.position = rail.LinearPosition(currentSeg, transition);
-
     }
 
     public void OnCollisionEnter(Collision col)
     {
-        if(col.gameObject.tag == "Rail")
+        if (col.gameObject.tag == "Rail")
         {
             //Debug.Log("Col");
-            if(col.gameObject.transform.parent.GetComponent<Rail>() != null)
+            if (col.gameObject.transform.parent.GetComponent<Rail>() != null)
             {
                 if (railActiveCount > 20 && rail == null)
                 {
                     rail = col.gameObject.transform.parent.GetComponent<Rail>();
-                    currentSeg = GetClosestPos(col.gameObject.transform.parent.GetComponent<Rail>().RailArray, transform.position);
+                    currentSeg = GetClosestPos(col.gameObject.transform.parent.GetComponent<Rail>().RailArray,
+                        transform.position);
                     Actions.ChangeAction(5);
                     railActiveCount = 0;
                 }
@@ -114,7 +113,7 @@ public class Rail_Interaction : MonoBehaviour {
         Vector3 tMin = Vector3.zero;
         float minDist = Mathf.Infinity;
         Vector3 currentPos = playerPos;
-        for(int i = 0; i < pos.Length; i++)
+        for (int i = 0; i < pos.Length; i++)
         {
             float dist = Vector3.Distance(pos[i], currentPos);
             if (dist < minDist)
@@ -125,5 +124,4 @@ public class Rail_Interaction : MonoBehaviour {
         }
         return seg;
     }
-
 }

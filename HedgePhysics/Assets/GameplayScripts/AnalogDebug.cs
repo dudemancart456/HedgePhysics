@@ -2,8 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class AnalogDebug : MonoBehaviour {
-
+public class AnalogDebug : MonoBehaviour
+{
     public RectTransform AnalogStickPos;
     public float Size;
 
@@ -14,5 +14,4 @@ public class AnalogDebug : MonoBehaviour {
         Vector3 Inpuy = new Vector3(Inp.UtopiaInput.x, Inp.UtopiaInput.z, Inp.UtopiaInput.y);
         AnalogStickPos.localPosition = Inpuy * Size;
     }
-
 }

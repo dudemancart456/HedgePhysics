@@ -3,7 +3,6 @@ using System.Collections;
 
 public class SpeedPadData : MonoBehaviour
 {
-
     public float Speed;
     public bool LockToDirection;
     public bool LockControl;
@@ -13,6 +12,4 @@ public class SpeedPadData : MonoBehaviour
     public bool isDashRing;
     public bool ResetRotation = true;
     public bool AffectCamera = true;
-
 }
-
