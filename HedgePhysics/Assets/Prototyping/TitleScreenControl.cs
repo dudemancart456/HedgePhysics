@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class TitleScreenControl : MonoBehaviour {
-
+public class TitleScreenControl : MonoBehaviour
+{
     public Image BlackFade;
     public Animator PressStartAnim;
     public float PressStartIncreaceSpeed;
@@ -21,8 +21,8 @@ public class TitleScreenControl : MonoBehaviour {
         BlackFade.enabled = true;
     }
 
-    void Update () {
-
+    void Update()
+    {
         if (End)
         {
             counter += Time.deltaTime;
@@ -31,7 +31,7 @@ public class TitleScreenControl : MonoBehaviour {
             if (counter > EndStageAt)
             {
                 BlackFade.color = Color.Lerp(BlackFade.color, Color.black, Time.deltaTime * 8);
-                if(counter > EndStageAt + 1.5f)
+                if (counter > EndStageAt + 1.5f)
                 {
                     Application.LoadLevel(1);
                 }
@@ -42,10 +42,9 @@ public class TitleScreenControl : MonoBehaviour {
             Color a = Color.black;
             a.a = 0;
             BlackFade.color = Color.Lerp(BlackFade.color, a, Time.deltaTime * 3);
-
         }
 
-        if(Input.GetButtonDown("Start") || Input.GetButtonDown("A"))
+        if (Input.GetButtonDown("Start") || Input.GetButtonDown("A"))
         {
             if (!End)
             {
@@ -53,6 +52,5 @@ public class TitleScreenControl : MonoBehaviour {
                 End = true;
             }
         }
-
     }
 }

@@ -1,10 +1,10 @@
-﻿ using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class StageSelectControl : MonoBehaviour {
-
+public class StageSelectControl : MonoBehaviour
+{
     bool End;
     float Counter;
     public Image BlackFade;
@@ -22,7 +22,6 @@ public class StageSelectControl : MonoBehaviour {
 
     void Update()
     {
-
         if (End)
         {
             Counter += Time.deltaTime;
@@ -44,12 +43,13 @@ public class StageSelectControl : MonoBehaviour {
         }
     }
 
-    public void GoToLoading( int loadingscreen)
+    public void GoToLoading(int loadingscreen)
     {
         LevelToGo = loadingscreen;
         End = true;
     }
-    public void GoToLevel( int levelToLoad)
+
+    public void GoToLevel(int levelToLoad)
     {
         SceneController.LevelToLoad = levelToLoad;
         End = true;
@@ -59,6 +59,7 @@ public class StageSelectControl : MonoBehaviour {
     {
         LoadingScreenControl.StageName1 = name;
     }
+
     public void SetStageNameRight(string name)
     {
         LoadingScreenControl.StageName2 = name;
@@ -69,10 +70,10 @@ public class StageSelectControl : MonoBehaviour {
         MenuSounds.clip = move;
         MenuSounds.Play();
     }
+
     public void ClickSound()
     {
         MenuSounds.clip = Click;
         MenuSounds.Play();
     }
-    
 }

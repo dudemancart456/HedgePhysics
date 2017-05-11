@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LandingSound : MonoBehaviour {
-
+public class LandingSound : MonoBehaviour
+{
     public PlayerBhysics Player;
     AudioSource source;
     bool played = false;
@@ -13,8 +13,8 @@ public class LandingSound : MonoBehaviour {
         source = GetComponent<AudioSource>();
     }
 
-    void Update () {
-
+    void Update()
+    {
         if (Player.Grounded)
         {
             if (!played)
@@ -27,6 +27,5 @@ public class LandingSound : MonoBehaviour {
         {
             played = false;
         }
-
-	}
+    }
 }

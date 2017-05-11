@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine.Audio;
 using UnityEngine;
 
-public class LoadSound : MonoBehaviour {
-
+public class LoadSound : MonoBehaviour
+{
     public AudioMixer Music;
     public AudioMixer Sfx;
 
-    void Start () {
-
+    void Start()
+    {
         //VOLUME SETS
         if (!PlayerPrefs.HasKey("MUSIC_VOL"))
         {
@@ -21,14 +21,11 @@ public class LoadSound : MonoBehaviour {
         }
 
         SetVolume();
-
     }
 
     public void SetVolume()
     {
-
         Music.SetFloat("Volume", PlayerPrefs.GetFloat("MUSIC_VOL"));
         Sfx.SetFloat("Volume", PlayerPrefs.GetFloat("SFX_VOL"));
     }
-
 }

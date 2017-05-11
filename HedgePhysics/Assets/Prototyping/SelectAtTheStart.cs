@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class SelectAtTheStart : MonoBehaviour {
-
-	void OnEnable() {
-
+public class SelectAtTheStart : MonoBehaviour
+{
+    void OnEnable()
+    {
         GetComponent<Button>().Select();
-
-	}
-	
+    }
 }

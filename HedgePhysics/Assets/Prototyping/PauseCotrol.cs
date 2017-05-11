@@ -4,16 +4,14 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class PauseCotrol : MonoBehaviour {
-
+public class PauseCotrol : MonoBehaviour
+{
     public HedgeCamera Cam;
 
     public GameObject Pause;
     public GameObject OptionsMenu;
 
-    [Header ("Options menu stuff")]
-
-    public AudioMixer Music;
+    [Header("Options menu stuff")] public AudioMixer Music;
     public AudioMixer Sfx;
 
     public Slider MusicSlider;
@@ -25,8 +23,8 @@ public class PauseCotrol : MonoBehaviour {
     public Slider SensX;
     public Slider SensY;
 
-    void Start () {
-
+    void Start()
+    {
         Pause.SetActive(false);
         OptionsMenu.SetActive(false);
 
@@ -62,7 +60,6 @@ public class PauseCotrol : MonoBehaviour {
 
         InitialSetSliders();
         InitialIconsSet();
-
     }
 
     void Update()
@@ -79,8 +76,8 @@ public class PauseCotrol : MonoBehaviour {
         SetVolume();
     }
 
-    public void PauseToggle () {
-
+    public void PauseToggle()
+    {
         if (Pause.activeSelf)
         {
             Pause.SetActive(false);
@@ -91,8 +88,8 @@ public class PauseCotrol : MonoBehaviour {
             Pause.SetActive(true);
             Time.timeScale = 0;
         }
+    }
 
-	}
     public void SetPauseButton()
     {
         PauseMainButton.Select();
@@ -100,7 +97,6 @@ public class PauseCotrol : MonoBehaviour {
 
     public void PauseToggleUnscaled()
     {
-
         if (Pause.activeSelf)
         {
             Pause.SetActive(false);
@@ -109,17 +105,18 @@ public class PauseCotrol : MonoBehaviour {
         {
             Pause.SetActive(true);
         }
-
     }
 
     public void Resume()
     {
         PauseToggle();
     }
+
     public void Quit()
     {
         Application.Quit();
     }
+
     public void OptionsToggle()
     {
         if (OptionsMenu.activeSelf)
@@ -142,6 +139,7 @@ public class PauseCotrol : MonoBehaviour {
         Cam.SensiX = PlayerPrefs.GetFloat("X_SENS");
         Cam.SensiY = PlayerPrefs.GetFloat("Y_SENS");
     }
+
     public void SetVolume()
     {
         PlayerPrefs.SetFloat("MUSIC_VOL", MusicSlider.value);
@@ -190,6 +188,7 @@ public class PauseCotrol : MonoBehaviour {
             }
         }
     }
+
     void InitialIconsSet()
     {
         Cam.SensiX = PlayerPrefs.GetFloat("X_SENS");
@@ -215,7 +214,6 @@ public class PauseCotrol : MonoBehaviour {
             Cam.InvertedX = -1;
             SetInvertIcons(true, true);
         }
-
     }
 
     void SetInvertIcons(bool activate, bool isX)

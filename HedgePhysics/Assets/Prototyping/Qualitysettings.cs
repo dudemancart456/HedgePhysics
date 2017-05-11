@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Qualitysettings : MonoBehaviour {
-
+public class Qualitysettings : MonoBehaviour
+{
     public UnityStandardAssets.CinematicEffects.Bloom bloom;
 
-	void Start () {
-
+    void Start()
+    {
         SetQuality();
-
     }
 
     public void SetQuality()
@@ -28,6 +27,4 @@ public class Qualitysettings : MonoBehaviour {
                 break;
         }
     }
-	
-
 }
