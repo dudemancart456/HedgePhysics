@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UnityStandardAssets.ImageEffects
 {
-    [CustomEditor(typeof (Antialiasing))]
+    [CustomEditor(typeof(Antialiasing))]
     public class AntialiasingEditor : Editor
     {
         private SerializedObject serObj;
@@ -49,7 +49,9 @@ namespace UnityStandardAssets.ImageEffects
             Material mat = (target as Antialiasing).CurrentAAMaterial();
             if (null == mat && (target as Antialiasing).enabled)
             {
-                EditorGUILayout.HelpBox("This AA technique is currently not supported. Choose a different technique or disable the effect and use MSAA instead.", MessageType.Warning);
+                EditorGUILayout.HelpBox(
+                    "This AA technique is currently not supported. Choose a different technique or disable the effect and use MSAA instead.",
+                    MessageType.Warning);
             }
 
             if (mode.enumValueIndex == (int) AAMode.NFAA)
